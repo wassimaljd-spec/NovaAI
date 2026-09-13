@@ -3,48 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Nova AI</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- SIDEBAR -->
-  <aside id="historyPanel" class="sidebar">
+  <aside id="historyPanel" class="history-panel">
 
-    <div class="side-brand">
-      <div class="nova-mark">✦</div>
+    <div class="history-header">
+      <h2>Chat history</h2>
 
-      <div>
-        <div class="nova-word">
-          NOVA <span>AI</span>
-        </div>
-
-        <small>
-          Think ✦ Create ✦ Explore
-        </small>
-      </div>
+      <button type="button" onclick="toggleHistory()">
+        ✕
+      </button>
     </div>
 
-    <button class="side-new" onclick="newChat()">
-      ✎ <span>New Chat</span>
-    </button>
-
-    <button class="side-item" onclick="toggleHistory()">
-      ◷ <span>Chat History</span>
-    </button>
-
-    <button class="side-item">
-      ⚙ <span>Settings</span>
-    </button>
-
-    <div class="side-quote">
-      Better questions<br>
-      create a brighter<br>
-      future. ✦
-
-      <div class="quote-line"></div>
-    </div>
+    <div id="historyList" class="history-list"></div>
 
   </aside>
 
@@ -54,187 +30,105 @@
     onclick="toggleHistory()">
   </div>
 
+  <div class="app">
 
-  <!-- MOBILE HEADER -->
+    <header class="header">
 
-  <div class="mobile-header">
+      <div class="brand">
 
-    <button
-      class="hamburger"
-      onclick="toggleHistory()">
-      ☰
-    </button>
+        <button
+          class="history-button"
+          type="button"
+          onclick="toggleHistory()"
+          aria-label="Chat history">
+          ☰
+        </button>
 
-    <div class="mobile-logo">
-      ✦
-    </div>
+        <div class="logo">✦</div>
 
-    <div class="mobile-brand">
-      <b>Nova AI</b>
-      <span>Always ready to help</span>
-    </div>
+        <div>
+          <h1>Nova AI</h1>
+          <span>Always ready to help</span>
+        </div>
 
-    <button
-      class="mobile-new"
-      onclick="newChat()">
-      + New chat
-    </button>
-
-  </div>
-
-
-  <!-- MAIN -->
-
-  <main class="main">
-
-    <!-- TOP BAR -->
-
-    <header class="topbar">
-
-      <button class="moon">
-        ☾
-      </button>
-
-      <div class="status">
-        ✦ &nbsp; Nova AI
-        <i></i>
       </div>
+
+      <button
+        class="new-chat"
+        type="button"
+        onclick="newChat()">
+        + New chat
+      </button>
 
     </header>
 
+    <main id="chat" class="chat">
 
-    <!-- CHAT -->
+      <section class="welcome" id="welcome">
 
-    <section id="chat" class="chat">
+        <div class="welcome-icon">🤖</div>
 
-      <div id="welcome" class="welcome">
+        <h2>What can I help you with?</h2>
 
-        <!-- NOVA ORBIT LOGO -->
-
-        <div class="hero-orbit">
-
-          <div class="orbit-ring"></div>
-
-          <div class="hero-star">
-            ✦
-          </div>
-
-          <span class="star s1">✦</span>
-          <span class="star s2">✦</span>
-          <span class="star s3">✦</span>
-
-        </div>
-
-
-        <h1>
-          NOVA <span>AI</span>
-        </h1>
-
-        <p class="tagline">
-          Your AI assistant
-          &nbsp;✦&nbsp;
-          Always here for you
+        <p>
+          Ask me anything. I'm here to help you learn,
+          create and explore.
         </p>
-
-
-        <!-- QUICK BUTTONS -->
 
         <div class="suggestions">
 
           <button
+            type="button"
             onclick="suggest('Explain something to me')">
-
-            ♧
-
-            <span>
-              Explain<br>
-              something
-            </span>
-
+            💡 Explain something
           </button>
 
-
           <button
+            type="button"
             onclick="suggest('Help me write something')">
-
-            ✎
-
-            <span>
-              Help me<br>
-              write
-            </span>
-
+            ✍️ Help me write
           </button>
 
-
           <button
+            type="button"
             onclick="suggest('Give me an idea')">
-
-            ♢
-
-            <span>
-              Give me<br>
-              an idea
-            </span>
-
-          </button>
-
-
-          <button
-            onclick="suggest('Can you do some maths?')">
-
-            ▣
-
-            <span>
-              Do some<br>
-              maths
-            </span>
-
+            🚀 Give me an idea
           </button>
 
         </div>
 
-      </div>
+      </section>
 
-    </section>
-
-
-    <!-- INPUT -->
+    </main>
 
     <footer class="input-area">
 
       <div class="input-box">
 
-        <button class="attach">
-          ♧
-        </button>
-
         <textarea
           id="message"
+          placeholder="Message Nova AI..."
           rows="1"
-          placeholder="Type a message..."
           onkeydown="handleKey(event)"
-          oninput="autoResize(this)">
-        </textarea>
+          oninput="autoResize(this)"></textarea>
 
         <button
           class="send"
-          onclick="sendMessage()">
-
+          type="button"
+          onclick="sendMessage()"
+          aria-label="Send message">
           ➤
-
         </button>
 
       </div>
 
-      <div class="disclaimer">
+      <p class="disclaimer">
         Nova AI can make mistakes. Check important information.
-      </div>
+      </p>
 
     </footer>
 
-  </main>
-
+  </div>
 
   <script src="script.js"></script>
 
