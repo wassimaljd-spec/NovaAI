@@ -1,73 +1,72 @@
+const chat = document.getElementById("chat");
+const messageInput = document.getElementById("message");
+
+
+// ==============================
+// NOVA'S BUILT-IN RESPONSES
+// ==============================
+
 const replies = {
 
-  "hi":
-    "Yooo 😎 What's good?",
+  "hi": "Yooo 😎 What's good?",
+  "hello": "Yo! 👋 What's good?",
+  "hey": "Ayy 😎 What's up?",
+  "yo": "Yooo bro 💀",
 
-  "hello":
-    "Hey there! 👋 What can I help you with today?",
+  "how are you": "I'm doing great 🤖🔥 How about you?",
+  "you good": "Always 😎",
+  "what's up": "Not much 😎 Just chilling in the code.",
+  "what are you": "I'm Nova AI ✦ Your AI assistant.",
+  "who are you": "I'm Nova AI ✦ Your slightly chaotic AI assistant 😎",
+  "are you ai": "Yep 🤖 I'm an AI!",
+  "can you code": "Absolutely 😎 Send me the code and let's cook 🔥",
 
-  "hey":
-    "Yooo 😎 What's good?",
+  "thank you": "Anytime bro ❤️",
+  "thanks": "No problem 😎",
+  "bye": "Aight, later bro 👋",
+  "goodbye": "Later bro 🚀",
 
-  "yo":
-    "Yooo bro 💀",
+  "lol": "You laughing at me or with me? 😂",
+  "lmao": "NAHHH 😭",
+  "haha": "Glad I made you laugh 😂",
+  "bruh": "Bro what 💀",
+  "fuck you": "Fuck you too 😂",
+  "you suck": "Damn bro, I just got here 💀",
+  "stupid": "Look who's talking 💀",
+  "idiot": "Takes one to know one 😭",
+  "shut up": "Make me 😂",
 
-  "how are you":
-    "I'm doing great 🤖🔥 How about you?",
+  "i'm bored": "Say less. Let's build something 🔥",
+  "i am bored": "Say less. Let's build something 🔥",
+  "i'm tired": "Take a break bro 😭 You deserve it.",
+  "i'm hungry": "Go get some food bro 😭🍕",
+  "i'm happy": "AYYY 🔥 Love that for you 😎",
+  "i'm sad": "I'm here bro ❤️ What's going on?",
+  "i'm confused": "No worries 😎 We'll figure it out together.",
 
-  "what are you":
-    "I'm Nova AI ✦ Your AI assistant.",
+  "can you help me": "Of course! 😎 What do you need help with?",
+  "help me": "Say less 😎 What's the problem?",
+  "help me code": "Let's cook some code 👨‍💻🔥 What are you building?",
+  "help me make a website": "Bet 🌐🔥 Let's build it!",
+  "help me make an app": "Say less 📱😎 What kind of app?",
+  "help me make a game": "LET'S GOOO 🎮🔥 What game are we making?",
 
-  "who are you":
-    "I'm Nova AI ✦ Your slightly chaotic AI assistant 😎",
-
-  "are you ai":
-    "Yep 🤖 I'm an AI!",
-
-  "can you code":
-    "Absolutely 😎 Send me the code and let's cook 🔥",
-
-  "thank you":
-    "Anytime bro ❤️",
-
-  "thanks":
-    "No problem 😎",
-
-  "bye":
-    "Aight, later bro 👋",
-
-  "goodbye":
-    "Later bro 🚀",
-
-  "can you help me":
-    "Of course! 😎 What do you need help with?",
-
-  "help me":
-    "Say less 😎 What's the problem?",
-
-  "help me code":
-    "Let's cook some code 👨‍💻🔥 What are you building?",
-
-  "help me make a website":
-    "Bet 🌐🔥 Let's build it!",
-
-  "help me make an app":
-    "Say less 📱😎 What kind of app?",
-
-  "help me make a game":
-    "LET'S GOOO 🎮🔥 What game are we making?",
-
-  "can you do math":
-    "Yep 🧮 Give me the numbers!",
-
-  "can you do maths":
-    "Yep 🧮 Send me the problem!",
+  "can you do math": "Yep 🧮 Give me the numbers!",
+  "can you do maths": "Yep 🧮 Send me the problem!",
+  "i need math": "I'm ready 🧮 What are we solving?",
+  "i need maths": "I'm ready 🧮 What are we solving?",
 
   "tell me a joke":
     "Why do programmers prefer dark mode? Because light attracts bugs 🐛💀",
 
+  "tell me another joke":
+    "I would tell you a UDP joke... but you might not get it 😂",
+
   "give me an idea":
     "Make a game where the player has to escape an AI-controlled city 🤖🌆🔥",
+
+  "surprise me":
+    "Fun fact: Octopuses have three hearts 🐙❤️❤️❤️",
 
   "what can you do":
     "I can help with maths, coding, school, writing, ideas and more 🚀",
@@ -101,397 +100,325 @@ const replies = {
 };
 
 
-/* NORMALIZE */
+// ==============================
+// SEND MESSAGE
+// ==============================
 
-function normalize(text) {
+function sendMessage() {
 
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[!?.,]+$/g, "");
+  const text = messageInput.value.trim();
 
+  if (!text) return;
+
+  // Remove welcome screen
+  const welcome = document.getElementById("welcome");
+
+  if (welcome) {
+    welcome.remove();
+  }
+
+  // Show user's message
+  addMessage(text, "user");
+
+  // Clear input
+  messageInput.value = "";
+  autoResize(messageInput);
+
+  // Wait a little before Nova replies
+  setTimeout(() => {
+
+    const response = getNovaResponse(text);
+
+    addMessage(response, "ai");
+
+  }, 500);
 }
 
 
-/* CALCULATOR */
+// ==============================
+// GET NOVA RESPONSE
+// ==============================
 
-function calculate(text) {
+function getNovaResponse(text) {
 
-  const cleaned = text
-    .toLowerCase()
+  const lower = text.toLowerCase().trim();
 
-    .replace(
-      /what is|what's|calculate|solve|equals|=/g,
-      ""
-    )
-
-    .replace(/[x×]/g, "*")
-
-    .replace(/÷/g, "/")
-
-    .trim();
-
-
-  if (
-    !/^[0-9+\-*/().%\s]+$/.test(cleaned)
-  ) {
-
-    return null;
-
+  // Exact built-in response
+  if (replies[lower]) {
+    return replies[lower];
   }
 
 
-  if (!/[0-9]/.test(cleaned)) {
+  // Maths help
+  if (
+    lower.includes("help me with math") ||
+    lower.includes("help me with maths") ||
+    lower.includes("can you help me with math") ||
+    lower.includes("can you help me with maths")
+  ) {
+    return "Sure! 🧮 What can I help you with?";
+  }
 
+
+  // Calculator
+  const mathAnswer = calculateMath(text);
+
+  if (mathAnswer !== null) {
+    return mathAnswer + " ✅";
+  }
+
+
+  // More flexible responses
+  if (lower.includes("joke")) {
+    return "Why was the computer cold? It left its Windows open 😂💀";
+  }
+
+  if (lower.includes("math") || lower.includes("maths")) {
+    return "Sure 🧮 Send me the maths problem!";
+  }
+
+  if (lower.includes("game")) {
+    return "🎮 I'm down! We could make a racing game, survival game, platformer or even an AI game.";
+  }
+
+  if (lower.includes("website")) {
+    return "🌐 Let's build it! Tell me what you want the website to do.";
+  }
+
+  if (lower.includes("app")) {
+    return "📱 Bet! Tell me what kind of app you want to make.";
+  }
+
+  if (lower.includes("hello") || lower.includes("hey")) {
+    return "Ayy 😎 What's up?";
+  }
+
+
+  // Default response
+  return "Hmm 👀 I don't have a built-in answer for that yet, but I'm listening. Try asking me something else!";
+}
+
+
+// ==============================
+// CALCULATOR
+// ==============================
+
+function calculateMath(text) {
+
+  let expression = text
+    .toLowerCase()
+    .replace(/what is/g, "")
+    .replace(/calculate/g, "")
+    .replace(/please/g, "")
+    .trim();
+
+
+  expression = expression
+    .replace(/×/g, "*")
+    .replace(/÷/g, "/")
+    .replace(/−/g, "-")
+    .replace(/\^/g, "**")
+    .replace(/\bx\b/g, "*")
+    .replace(/\bplus\b/g, "+")
+    .replace(/\bminus\b/g, "-")
+    .replace(/\btimes\b/g, "*")
+    .replace(/multiplied by/g, "*")
+    .replace(/divided by/g, "/");
+
+
+  // Only allow maths characters
+  if (!/^[0-9+\-*/().%\s]+$/.test(expression)) {
     return null;
+  }
 
+
+  // Must contain a number and an operator
+  if (
+    !/\d/.test(expression) ||
+    !/[+\-*/%]/.test(expression)
+  ) {
+    return null;
   }
 
 
   try {
 
-    const result =
-      Function(
-        '"use strict"; return (' +
-        cleaned +
-        ')'
-      )();
+    const answer = Function(
+      '"use strict"; return (' + expression + ')'
+    )();
 
 
     if (
-      typeof result !== "number" ||
-      !Number.isFinite(result)
+      typeof answer !== "number" ||
+      !Number.isFinite(answer)
     ) {
-
       return null;
-
     }
 
 
-    return `${cleaned} = ${result} ✅`;
+    return expression
+      .replace(/\*/g, " × ")
+      .replace(/\//g, " ÷ ")
+      + " = " + answer;
 
-  }
-
-  catch (error) {
+  } catch {
 
     return null;
-
   }
-
 }
 
 
-/* GET NOVA REPLY */
-
-function getReply(text) {
-
-  const normalized =
-    normalize(text);
-
-
-  /* EXACT REPLY */
-
-  if (replies[normalized]) {
-
-    return replies[normalized];
-
-  }
-
-
-  /* MATH */
-
-  const math =
-    calculate(text);
-
-
-  if (math) {
-
-    return math;
-
-  }
-
-
-  /* FLEXIBLE REPLIES */
-
-  if (
-    normalized.includes("math") ||
-    normalized.includes("maths")
-  ) {
-
-    return "Sure! 🧮 Send me a maths problem and I'll solve it.";
-
-  }
-
-
-  if (
-    normalized.includes("joke")
-  ) {
-
-    return replies["tell me a joke"];
-
-  }
-
-
-  if (
-    normalized.includes("game")
-  ) {
-
-    return replies["help me make a game"];
-
-  }
-
-
-  if (
-    normalized.includes("website")
-  ) {
-
-    return replies["help me make a website"];
-
-  }
-
-
-  if (
-    normalized.includes("app")
-  ) {
-
-    return replies["help me make an app"];
-
-  }
-
-
-  if (
-    normalized.includes("hello") ||
-    normalized.includes("hey")
-  ) {
-
-    return replies["hello"];
-
-  }
-
-
-  /* DEFAULT */
-
-  return "I'm here 😎 Ask me something, give me a maths problem, or tell me what you want to build!";
-
-}
-
-
-/* ADD MESSAGE */
+// ==============================
+// ADD MESSAGE
+// ==============================
 
 function addMessage(text, type) {
 
-  const chat =
-    document.getElementById("chat");
+  const message = document.createElement("div");
+
+  message.className = "message " + type;
 
 
-  const welcome =
-    document.getElementById("welcome");
+  if (type === "ai") {
 
+    message.innerHTML = `
+      <div class="nova-name">✦ Nova</div>
+      <div class="nova-text">${escapeHTML(text)}</div>
+    `;
 
-  if (welcome) {
+  } else {
 
-    welcome.remove();
-
-  }
-
-
-  const row =
-    document.createElement("div");
-
-
-  row.className =
-    "message " + type;
-
-
-  if (type === "user") {
-
-    row.innerHTML =
-      `<div class="bubble">
-        ${escapeHTML(text)}
-      </div>`;
-
-  }
-
-  else {
-
-    row.innerHTML =
-      `<div class="nova-name">
-        Nova
-      </div>
-
-      <div class="nova-text">
-        ${escapeHTML(text)}
-      </div>`;
+    message.textContent = text;
 
   }
 
 
-  chat.appendChild(row);
+  chat.appendChild(message);
 
-
-  chat.scrollTop =
-    chat.scrollHeight;
-
+  chat.scrollTop = chat.scrollHeight;
 }
 
 
-/* SEND */
-
-function sendMessage() {
-
-  const input =
-    document.getElementById("message");
-
-
-  const text =
-    input.value.trim();
-
-
-  if (!text) {
-
-    return;
-
-  }
-
-
-  addMessage(
-    text,
-    "user"
-  );
-
-
-  input.value = "";
-
-
-  autoResize(input);
-
-
-  /* NOVA THINKING DELAY */
-
-  setTimeout(function() {
-
-    addMessage(
-      getReply(text),
-      "ai"
-    );
-
-  }, 350);
-
-}
-
-
-/* SUGGESTION BUTTON */
+// ==============================
+// SUGGESTION BUTTONS
+// ==============================
 
 function suggest(text) {
 
-  const input =
-    document.getElementById("message");
-
-
-  input.value =
-    text;
-
+  messageInput.value = text;
 
   sendMessage();
-
 }
 
 
-/* ENTER TO SEND */
+// ==============================
+// ENTER TO SEND
+// ==============================
 
 function handleKey(event) {
 
-  if (
-    event.key === "Enter" &&
-    !event.shiftKey
-  ) {
+  if (event.key === "Enter" && !event.shiftKey) {
 
     event.preventDefault();
 
     sendMessage();
-
   }
-
 }
 
 
-/* AUTO RESIZE */
+// ==============================
+// TEXTAREA RESIZE
+// ==============================
 
-function autoResize(element) {
+function autoResize(textarea) {
 
-  element.style.height =
-    "auto";
+  textarea.style.height = "auto";
 
-
-  element.style.height =
-    Math.min(
-      element.scrollHeight,
-      130
-    ) + "px";
-
+  textarea.style.height =
+    Math.min(textarea.scrollHeight, 160) + "px";
 }
 
 
-/* NEW CHAT */
+// ==============================
+// NEW CHAT
+// ==============================
 
 function newChat() {
 
-  const chat =
-    document.getElementById("chat");
-
-
   chat.innerHTML = `
+    <section class="welcome" id="welcome">
 
-    <div id="welcome" class="welcome">
+      <div class="welcome-icon">🚀</div>
 
-      <div class="hero-orbit">
+      <h2>What can I help you with?</h2>
 
-        <div class="orbit-ring"></div>
-
-        <div class="hero-star">
-          ✦
-        </div>
-
-        <span class="star s1">
-          ✦
-        </span>
-
-        <span class="star s2">
-          ✦
-        </span>
-
-        <span class="star s3">
-          ✦
-        </span>
-
-      </div>
-
-
-      <h1>
-        NOVA <span>AI</span>
-      </h1>
-
-
-      <p class="tagline">
-        Your AI assistant
-        &nbsp;✦&nbsp;
-        Always here for you
+      <p>
+        Ask me anything. I'm here to help you
+        learn, create and explore.
       </p>
-
 
       <div class="suggestions">
 
-        <button
+        <button type="button"
           onclick="suggest('Explain something to me')">
-
-          ♧
-
-          <span>
-            Explain<br>
-            something
-          </span>
-
+          💡 Explain something
         </button>
 
+        <button type="button"
+          onclick="suggest('Help me write something')">
+          ✍️ Help me write
+        </button>
 
-        <button
+        <button type="button"
+          onclick="suggest('Give me an idea')">
+          🚀 Give me an idea
+        </button>
+
+      </div>
+
+    </section>
+  `;
+
+  messageInput.value = "";
+
+  autoResize(messageInput);
+}
+
+
+// ==============================
+// HISTORY BUTTON
+// ==============================
+
+function toggleHistory() {
+
+  const panel = document.getElementById("historyPanel");
+  const overlay = document.getElementById("historyOverlay");
+
+  if (!panel || !overlay) return;
+
+  panel.classList.toggle("open");
+  overlay.classList.toggle("open");
+}
+
+
+// ==============================
+// SECURITY
+// ==============================
+
+function escapeHTML(text) {
+
+  const div = document.createElement("div");
+
+  div.textContent = text;
+
+  return div.innerHTML;
+}
+
+
+// Make functions available to HTML
+window.sendMessage = sendMessage;
+window.suggest = suggest;
+window.handleKey = handleKey;
+window.autoResize = autoResize;
+window.newChat = newChat;
+window.toggleHistory = toggleHistory;
