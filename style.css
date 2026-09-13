@@ -36,6 +36,7 @@ button {
   flex-direction: column;
 }
 
+
 /* HEADER */
 
 .header {
@@ -56,6 +57,25 @@ button {
   align-items: center;
   gap: 12px;
 }
+
+
+/* HISTORY BUTTON */
+
+.history-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: #e9ebf5;
+  background: rgba(255,255,255,.07);
+  font-size: 20px;
+  transition: .2s ease;
+}
+
+.history-button:hover {
+  background: rgba(255,255,255,.13);
+  transform: translateY(-1px);
+}
+
 
 .logo {
   width: 44px;
@@ -89,6 +109,7 @@ button {
   background: rgba(255,255,255,.13);
   transform: translateY(-1px);
 }
+
 
 /* CHAT */
 
@@ -152,6 +173,7 @@ button {
   transform: translateY(-2px);
 }
 
+
 /* MESSAGES */
 
 .message {
@@ -177,6 +199,7 @@ button {
   border: 1px solid rgba(255,255,255,.08);
   border-bottom-left-radius: 6px;
 }
+
 
 /* INPUT */
 
@@ -243,6 +266,7 @@ textarea::placeholder {
   margin-top: 8px;
 }
 
+
 /* ANIMATION */
 
 @keyframes rise {
@@ -257,44 +281,55 @@ textarea::placeholder {
   }
 }
 
-/* PHONE */
 
-@media (max-width: 600px) {
+/* HISTORY SIDEBAR */
 
-  .header {
-    padding: 14px 16px;
-  }
-
-  .logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .brand h1 {
-    font-size: 17px;
-  }
-
-  .chat {
-    padding: 35px 16px 145px;
-  }
-
-  .welcome {
-    margin-top: 5vh;
-  }
-
-  .welcome h2 {
-    font-size: 32px;
-  }
-
-  .suggestions {
-    flex-direction: column;
-  }
-
-  .suggestions button {
-    width: 100%;
-  }
-
-  .input-area {
-    padding: 12px 12px 10px;
-  }
+.history-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100vh;
+  background: #10131f;
+  border-right: 1px solid rgba(255,255,255,.08);
+  z-index: 20;
+  transform: translateX(-100%);
+  transition: transform .25s ease;
+  box-shadow: 10px 0 40px rgba(0,0,0,.3);
 }
+
+.history-panel.open {
+  transform: translateX(0);
+}
+
+.history-header {
+  height: 76px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.history-header h2 {
+  font-size: 17px;
+}
+
+.history-header button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  color: #ddd;
+  background: rgba(255,255,255,.07);
+}
+
+.history-list {
+  padding: 12px;
+  overflow-y: auto;
+  height: calc(100vh - 76px);
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content:
