@@ -1,3 +1,4 @@
+alert("Nova script works!");
 const chat = document.getElementById("chat");
 const messageInput = document.getElementById("message");
 
