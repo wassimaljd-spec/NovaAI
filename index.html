@@ -6,25 +6,15 @@
   <title>Nova AI</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- HISTORY SIDEBAR -->
   <aside id="historyPanel" class="history-panel">
-
     <div class="history-header">
       <h2>Chat history</h2>
-
-      <button
-        type="button"
-        onclick="toggleHistory()"
-      >
-        ✕
-      </button>
+      <button type="button" onclick="toggleHistory()">✕</button>
     </div>
 
     <div id="historyList" class="history-list"></div>
-
   </aside>
 
   <div
@@ -33,14 +23,12 @@
     onclick="toggleHistory()"
   ></div>
 
-
   <div class="app">
 
     <header class="header">
 
       <div class="brand">
 
-        <!-- HISTORY BUTTON -->
         <button
           class="history-button"
           type="button"
@@ -59,7 +47,6 @@
 
       </div>
 
-
       <button
         class="new-chat"
         type="button"
@@ -70,25 +57,18 @@
 
     </header>
 
-
     <main id="chat" class="chat">
 
-      <section
-        class="welcome"
-        id="welcome"
-      >
+      <section class="welcome" id="welcome">
 
-        <div class="welcome-icon">✨</div>
+        <div class="welcome-icon">🚀</div>
 
-        <h2>
-          What can I help you with?
-        </h2>
+        <h2>What can I help you with?</h2>
 
         <p>
           Ask me anything. I'm here to help you learn,
           create and explore.
         </p>
-
 
         <div class="suggestions">
 
@@ -99,14 +79,12 @@
             💡 Explain something
           </button>
 
-
           <button
             type="button"
             onclick="suggest('Help me write something')"
           >
             ✍️ Help me write
           </button>
-
 
           <button
             type="button"
@@ -121,7 +99,6 @@
 
     </main>
 
-
     <footer class="input-area">
 
       <div class="input-box">
@@ -134,7 +111,6 @@
           oninput="autoResize(this)"
         ></textarea>
 
-
         <button
           class="send"
           type="button"
@@ -146,7 +122,6 @@
 
       </div>
 
-
       <p class="disclaimer">
         Nova AI can make mistakes. Check important information.
       </p>
@@ -154,7 +129,6 @@
     </footer>
 
   </div>
-
 
   <script src="script.js"></script>
 
