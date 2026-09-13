@@ -18,7 +18,8 @@ body {
     #080a12;
 }
 
-button, textarea {
+button,
+textarea {
   font: inherit;
 }
 
@@ -36,6 +37,7 @@ button {
 }
 
 /* HEADER */
+
 .header {
   display: flex;
   align-items: center;
@@ -89,10 +91,12 @@ button {
 }
 
 /* CHAT */
+
 .chat {
   flex: 1;
   width: 100%;
   padding: 55px 22px 150px;
+  overflow-y: auto;
 }
 
 .welcome {
@@ -149,6 +153,7 @@ button {
 }
 
 /* MESSAGES */
+
 .message {
   width: fit-content;
   max-width: min(720px, 85%);
@@ -174,6 +179,7 @@ button {
 }
 
 /* INPUT */
+
 .input-area {
   position: fixed;
   left: 50%;
@@ -237,18 +243,24 @@ textarea::placeholder {
   margin-top: 8px;
 }
 
+/* ANIMATION */
+
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* PHONE */
+
 @media (max-width: 600px) {
+
   .header {
     padding: 14px 16px;
   }
