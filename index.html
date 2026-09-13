@@ -3,46 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Nova AI</title>
-
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-
-  <aside id="historyPanel" class="history-panel">
-
-    <div class="history-header">
-      <h2>Chat history</h2>
-
-      <button type="button" onclick="toggleHistory()">
-        ✕
-      </button>
-    </div>
-
-    <div id="historyList" class="history-list"></div>
-
-  </aside>
-
-  <div
-    id="historyOverlay"
-    class="history-overlay"
-    onclick="toggleHistory()">
-  </div>
 
   <div class="app">
 
     <header class="header">
 
       <div class="brand">
-
-        <button
-          class="history-button"
-          type="button"
-          onclick="toggleHistory()"
-          aria-label="Chat history">
-          ☰
-        </button>
 
         <div class="logo">✦</div>
 
@@ -61,6 +32,7 @@
       </button>
 
     </header>
+
 
     <main id="chat" class="chat">
 
@@ -101,6 +73,7 @@
 
     </main>
 
+
     <footer class="input-area">
 
       <div class="input-box">
@@ -110,7 +83,8 @@
           placeholder="Message Nova AI..."
           rows="1"
           onkeydown="handleKey(event)"
-          oninput="autoResize(this)"></textarea>
+          oninput="autoResize(this)">
+        </textarea>
 
         <button
           class="send"
@@ -123,7 +97,8 @@
       </div>
 
       <p class="disclaimer">
-        Nova AI can make mistakes. Check important information.
+        Nova AI can make mistakes.
+        Check important information.
       </p>
 
     </footer>
