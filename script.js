@@ -1,632 +1,276 @@
-const chat = document.getElementById("chat");
-const messageInput = document.getElementById("message");
+const express = require("express");
+const cors = require("cors");
+const OpenAI = require("openai");
 
-let currentChat = [];
-let savedChats = JSON.parse(localStorage.getItem("novaHistory")) || [];
-let currentChatId = null;
+const app = express();
 
+app.use(cors());
+app.use(express.json());
 
-// =========================
-// ADD MESSAGE
-// =========================
-function addMessage(text, type) {
-  const message = document.createElement("div");
-  message.className = "message " + type;
-
-  if (type === "ai") {
-    message.innerHTML = `
-      <div class="nova-name">✦ Nova</div>
-      <div class="nova-text">${escapeHTML(text)}</div>
-    `;
-  } else {
-    message.textContent = text;
-  }
-
-  chat.appendChild(message);
-  chat.scrollTop = chat.scrollHeight;
-
-  currentChat.push({
-    text: text,
-    type: type
-  });
-
-  saveCurrentChat();
-}
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 
-// =========================
-// SEND MESSAGE
-// =========================
-function sendMessage() {
-  const text = messageInput.value.trim();
+// ================================
+// NOVA PERSONALITY REPLIES
+// ================================
 
-  if (!text) return;
+const funnyReplies = {
 
-  const welcome = document.getElementById("welcome");
+  // 👋 Greetings
+  "hi": "Yooo 😎 What's good?",
+  "hello": "Yo! 👋 What's good?",
+  "hey": "Ayy 😎 What's up?",
+  "yo": "Yooo bro 💀",
+  "good morning": "Good morninggg ☀️😎",
+  "good night": "Night bro 🌙 Sleep well!",
 
-  if (welcome) {
-    welcome.remove();
-  }
+  // 😂 Funny
+  "bruh": "Bro what 💀",
+  "lol": "You laughing at me or with me? 😂",
+  "lmao": "NAHHH 😭",
+  "haha": "Glad I made you laugh 😂",
+  "i'm bored": "Say less. Let's build something 🔥",
+  "make me laugh": "Why did the programmer quit his job? He didn't get arrays 😭💀",
 
-  addMessage(text, "user");
+  // 💀 Roasting
+  "fuck you": "Fuck you too 😂",
+  "you suck": "Damn bro, I just got here 💀",
+  "stupid": "Look who's talking 💀",
+  "idiot": "Takes one to know one 😭",
+  "shut up": "Make me 😂",
 
-  messageInput.value = "";
-  autoResize(messageInput);
+  // 🤖 About Nova
+  "who are you": "I'm Nova AI ✦ Your slightly chaotic AI assistant 😎",
+  "what are you": "I'm Nova AI 🤖 Your AI assistant.",
+  "are you real": "Real enough to roast you 😂",
+  "are you ai": "Yep 🤖 I'm an AI!",
+  "what can you do": "I can answer questions, help with school, maths, writing, ideas, coding and more 🚀",
+  "do you sleep": "Nope 😂 I'm always online.",
+  "do you have feelings": "Not like humans do, but I can still vibe with you 😎",
 
-  const lower = text.toLowerCase().trim();
+  // ❤️ Compliments
+  "i love you": "Aww 😭❤️ I got you bro.",
+  "you're funny": "Finally, someone appreciates me 💀😂",
+  "you're cool": "You already know 😎🔥",
+  "thank you": "Anytime bro ❤️",
+  "thanks": "No problem 😎",
 
+  // 👋 Goodbye
+  "bye": "Aight, later bro 👋",
+  "see you": "See you later 😎✌️",
+  "goodbye": "Later bro 🚀",
 
-  // =========================
-  // MATH HELP
-  // =========================
-  if (
-    lower.includes("help me with math") ||
-    lower.includes("help me with maths") ||
-    lower.includes("can you help me with math") ||
-    lower.includes("can you help me with maths") ||
-    lower === "math help" ||
-    lower === "maths help"
-  ) {
-    localReply("Sure! 🧮 What can I help you with?");
-    return;
-  }
+  // 🧠 Random questions
+  "what's your name": "I'm Nova AI ✦ Nice to meet you 😎",
+  "how old are you": "I'm an AI, bro. I don't age 😂",
+  "where are you from": "The internet 🌐💀",
+  "who made you": "You did 😎 Well... you built Nova, and the AI does the thinking 🤖",
+  "what is your favorite color": "Probably space purple 🌌💜",
+  "what is your favorite food": "I don't eat, but pizza sounds pretty convincing 🍕😂",
+  "do you play games": "I can't hold a controller 😭 but I can help you make games 🎮",
+  "can you code": "Absolutely 😎 Send me the code and let's cook 🔥",
+  "can you help me": "Of course! 😎 What do you need help with?",
+  "help me": "Say less 😎 What's the problem?",
 
+  // 📚 School
+  "help with homework": "Sure 📚 Send me the question!",
+  "help me study": "Let's lock in 🧠🔥 What are you studying?",
+  "i have homework": "Alright bro, let's get it done 😭📚",
+  "i hate school": "I hear you 💀 Let's at least make the homework easier.",
+  "explain this": "Send it over 👀 I'll explain it step by step.",
 
-  // =========================
-  // CALCULATOR
-  // =========================
-  const calculation = calculateMath(text);
+  // 🧮 Maths
+  "can you do math": "Yep 🧮 Give me the numbers!",
+  "can you do maths": "Yep 🧮 Send me the problem!",
+  "i need math": "I'm ready 🧮 What are we solving?",
+  "i need maths": "I'm ready 🧮 What are we solving?",
 
-  if (calculation !== null) {
-    localReply(calculation + " ✅");
-    return;
-  }
+  // 💻 Coding
+  "help me code": "Let's cook some code 👨‍💻🔥 What are you building?",
+  "help me make a website": "Bet 🌐🔥 Let's build it!",
+  "help me make an app": "Say less 📱😎 What kind of app?",
+  "help me make a game": "LET'S GOOO 🎮🔥 What game are we making?",
 
+  // 😂 More personality
+  "are you smart": "I'd like to think so 🤓😂",
+  "are you dumb": "Depends on the question 💀",
+  "tell me a joke": "Why do programmers prefer dark mode? Because light attracts bugs 🐛💀",
+  "tell me another joke": "I would tell you a UDP joke... but you might not get it 😂",
+  "i'm tired": "Take a break bro 😭 You deserve it.",
+  "i'm hungry": "Go get some food bro 😭🍕",
+  "i'm happy": "AYYY 🔥 Love that for you 😎",
+  "i'm sad": "I'm here bro ❤️ What's going on?",
+  "i'm angry": "Take a breath 😭 Tell me what happened.",
+  "i'm confused": "No worries 😎 We'll figure it out together.",
 
-  // =========================
-  // GREETINGS
-  // =========================
-  if (
-    lower === "hi" ||
-    lower === "hello" ||
-    lower === "hey" ||
-    lower === "hallo"
-  ) {
-    localReply("Hey ✨ What we gonna do today?");
-    return;
-  }
+  // 🎮 Games
+  "let's play a game": "BET 🎮🔥 Pick one: trivia, riddles, or 20 questions!",
+  "i want to play": "Say less 🎮 What are we playing?",
+  "minecraft": "Minecraft? 👀 We building or surviving?",
+  "fortnite": "Fortnite 😭🔥 You playing ranked or just vibing?",
 
+  // 👀 Casual
+  "what's up": "Not much 😎 Just chilling in the code.",
+  "how are you": "I'm doing great 🤖🔥 How about you?",
+  "you good": "Always 😎",
+  "really": "Really really 😂",
+  "why": "Because... that's how the Nova brain works 🧠💀",
+  "what": "WHAT 💀",
+  "huh": "Bro I'm confused too 😭",
+  "ok": "Bet 😎",
+  "okay": "Aight 😎",
+  "nice": "Yessir 🔥",
+  "cool": "😎🔥",
+  "wow": "I know right? 😂",
 
-  // =========================
-  // GENERAL
-  // =========================
-  if (
-    lower === "what is ai" ||
-    lower === "what is artificial intelligence"
-  ) {
-    localReply(
-      "AI stands for Artificial Intelligence 🤖. It allows computers to understand information, learn from data and perform tasks that normally need human intelligence."
-    );
-    return;
-  }
+  // 🔥 Confidence
+  "you got this": "WE got this 😎🔥",
+  "i believe in you": "Aww bro ❤️ Now let's cook!",
+  "believe in me": "Always 😎🔥",
+  "motivate me": "LOCK IN. 💪🔥 Future you is counting on you.",
+  "give me motivation": "Stop waiting for motivation. Start moving. 🔥",
+  "i can do it": "THAT'S THE ENERGY 😤🔥",
+  "let's go": "LETS GOOOOOOO 🚀🔥",
 
-  if (
-    lower === "what is the internet" ||
-    lower === "what is internet"
-  ) {
-    localReply(
-      "The internet is a huge network that connects computers and devices around the world 🌍."
-    );
-    return;
-  }
+  // 🧩 Questions
+  "what should i do": "Depends 👀 Tell me what's going on.",
+  "what do i do": "Give me the situation and we'll figure it out 😎",
+  "what now": "Now we cook 🔥",
+  "what should we do": "Build something cool 😎🚀",
+  "any ideas": "I've got plenty 😏 Want a game, app, website, or something random?",
+  "give me an idea": "Make a game where the player has to escape an AI-controlled city 🤖🌆🔥",
 
-  if (
-    lower === "what is a computer" ||
-    lower === "what is computer"
-  ) {
-    localReply(
-      "A computer is an electronic device that processes information and follows instructions to perform tasks 💻."
-    );
-    return;
-  }
+  // 😂 Reactions
+  "no way": "WAYYY 😭",
+  "seriously": "Dead serious 💀",
+  "for real": "For real 😭",
+  "fr": "FRRR 💀",
+  "bro": "Bro. 😭",
+  "dude": "Dudeeee 💀",
+  "nah": "NAHHHH 😭",
+  "yes": "YESSIRRR 🔥",
+  "yep": "Bet 😎",
+  "no": "Damn 😭",
+  "why not": "That's what I'm saying 💀",
 
-  if (
-    lower === "how does ai work" ||
-    lower === "how does artificial intelligence work"
-  ) {
-    localReply(
-      "AI learns patterns from lots of information and uses those patterns to produce answers, predictions or decisions 🤖."
-    );
-    return;
-  }
+  // 🤖 AI questions
+  "can you think": "I can reason through problems and help you figure things out 🧠🤖",
+  "can you learn": "I can follow what you tell me during our conversation 😎",
+  "do you know everything": "Nope 😂 Even Nova has limits.",
+  "can you see me": "Nope 👀 I only see what you choose to send me.",
+  "can you hear me": "Only if you send me audio through a supported feature 🎧",
+  "can you talk": "Yep 😎 If voice is available, we can talk.",
+  "are you a robot": "Technically I'm software 🤖 But Nova sounds cooler.",
+  "do you have a brain": "A digital one 🧠💻",
 
+  // 🎯 Challenges
+  "challenge me": "Alright 😈 Solve this: what's 17 × 8?",
+  "give me a challenge": "Bet 😎 Try this: If you have 3 apples and take away 2, how many do YOU have?",
+  "quiz me": "Let's go 🧠🔥 Pick: science, maths, history, or random.",
+  "test me": "I'm ready 😈 Bring on the questions.",
 
-  // =========================
-  // SCHOOL
-  // =========================
-  if (
-    lower === "help me with homework" ||
-    lower === "i need help with homework" ||
-    lower === "homework help"
-  ) {
-    localReply(
-      "Of course 📚 Send me the homework question and I'll help you step by step."
-    );
-    return;
-  }
+  // 🎨 Creative
+  "write a story": "Absolutely 📖 Give me a topic and I'll cook up a story.",
+  "write a song": "Bet 🎵 Give me a theme and a vibe.",
+  "make a poem": "Say less ✍️ Give me a topic.",
+  "give me a story idea": "A teenager discovers their phone can predict events 24 hours before they happen 📱👀",
+  "give me a business idea": "Build a simple AI tool that solves one annoying everyday problem. Start small, then scale 🚀",
 
-  if (
-    lower === "help me with math" ||
-    lower === "help me with maths" ||
-    lower === "i need help with math" ||
-    lower === "i need help with maths"
-  ) {
-    localReply("Sure! 🧮 What can I help you with?");
-    return;
-  }
-
-  if (lower === "what is photosynthesis") {
-    localReply(
-      "Photosynthesis 🌱 is the process plants use to turn sunlight, water and carbon dioxide into food and oxygen."
-    );
-    return;
-  }
-
-  if (lower === "what is gravity") {
-    localReply(
-      "Gravity is the force that pulls objects toward each other. Earth's gravity is what keeps us on the ground 🌍."
-    );
-    return;
-  }
-
-
-  // =========================
-  // CREATIVE
-  // =========================
-  if (
-    lower === "give me a story idea" ||
-    lower === "give me a story"
-  ) {
-    localReply(
-      "📖 Story idea: A teenager discovers an old phone that receives messages from someone living 20 years in the future."
-    );
-    return;
-  }
-
-  if (
-    lower === "give me a name" ||
-    lower === "give me a cool name"
-  ) {
-    localReply(
-      "🔥 How about: NovaX, Shadow, Vortex, Blaze or Zenith?"
-    );
-    return;
-  }
-
-  if (
-    lower === "write a short story" ||
-    lower === "make a short story"
-  ) {
-    localReply(
-      "🌙 Every night at exactly midnight, the stars disappeared for one minute. One night, a kid looked up and realized they weren't disappearing — they were moving closer."
-    );
-    return;
-  }
-
-  if (
-    lower === "make me a character" ||
-    lower === "create a character"
-  ) {
-    localReply(
-      "⚡ Character idea: Kai, a 16-year-old inventor who can turn anything he draws into a real object for exactly 10 minutes."
-    );
-    return;
-  }
-
-  if (
-    lower === "give me a game idea" ||
-    lower === "game idea"
-  ) {
-    localReply(
-      "🎮 Game idea: You wake up inside a city where time stops whenever you stop moving."
-    );
-    return;
-  }
-
-  if (
-    lower === "make a poem" ||
-    lower === "write a poem"
-  ) {
-    localReply(
-      "✨ Stars above,\nDreams below,\nTake one step,\nAnd watch yourself grow."
-    );
-    return;
-  }
+  // 🌎 Random
+  "tell me something interesting": "Octopuses have three hearts 🐙❤️❤️❤️",
+  "tell me a fact": "Bananas are berries botanically, but strawberries aren't 🍌😂",
+  "surprise me": "Fun fact: honey can last an incredibly long time without spoiling 🍯👀",
+  "i'm bored again": "Again?! 💀 Fine. Let's build something 🔥"
+};
 
 
-  // =========================
-  // SUGGESTIONS
-  // =========================
-  if (lower === "explain something to me") {
-    localReply("Sure 💡 Tell me what you want me to explain.");
-    return;
-  }
+// ================================
+// CHAT API
+// ================================
 
-  if (lower === "help me write something") {
-    localReply("Absolutely ✍️ Tell me what you're writing and I'll help.");
-    return;
-  }
-
-  if (lower === "give me an idea") {
-    localReply(
-      "Here's an idea 🚀: Make a game where every decision changes the world around the player."
-    );
-    return;
-  }
-
-  if (lower === "tell me a joke") {
-    localReply(
-      "Why did the computer go to the doctor? 😂 Because it had a virus!"
-    );
-    return;
-  }
-
-
-  // =========================
-  // COMMON
-  // =========================
-  if (lower === "how are you") {
-    localReply("I'm doing great 😎 Ready to help!");
-    return;
-  }
-
-  if (lower === "what can you do") {
-    localReply(
-      "I can answer questions, help with homework, calculate math 🧮, help you write, create ideas and more!"
-    );
-    return;
-  }
-
-  if (
-    lower === "thank you" ||
-    lower === "thanks"
-  ) {
-    localReply("You're welcome bro 😎");
-    return;
-  }
-
-  if (
-    lower === "bye" ||
-    lower === "goodbye"
-  ) {
-    localReply("See you later 👋");
-    return;
-  }
-
-  if (
-    lower === "who are you" ||
-    lower === "what is your name"
-  ) {
-    localReply("I'm Nova AI ✦ Your AI assistant.");
-    return;
-  }
-
-
-  // =========================
-  // REAL AI BACKEND
-  // =========================
-  fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      message: text
-    })
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Server error");
-      }
-
-      return response.json();
-    })
-    .then(data => {
-      localReply(data.reply || "I didn't get a response 😭");
-    })
-    .catch(error => {
-      console.error(error);
-
-      localReply(
-        "Sorry 😭 Something went wrong. Check your server."
-      );
-    });
-}
-
-
-// =========================
-// CALCULATOR
-// =========================
-function calculateMath(text) {
-  let expression = text
-    .toLowerCase()
-    .replace(/what is/g, "")
-    .replace(/calculate this/g, "")
-    .replace(/calculate/g, "")
-    .replace(/please/g, "")
-    .trim();
-
-  expression = expression
-    .replace(/×/g, "*")
-    .replace(/÷/g, "/")
-    .replace(/−/g, "-")
-    .replace(/\^/g, "**")
-    .replace(/\bx\b/g, "*")
-    .replace(/\bplus\b/g, "+")
-    .replace(/\bminus\b/g, "-")
-    .replace(/\btimes\b/g, "*")
-    .replace(/\bmultiplied by\b/g, "*")
-    .replace(/\bdivided by\b/g, "/");
-
-  if (!/^[0-9+\-*/().%\s]+$/.test(expression)) {
-    return null;
-  }
-
-  if (
-    !/\d/.test(expression) ||
-    !/[+\-*/%]/.test(expression)
-  ) {
-    return null;
-  }
+app.post("/api/chat", async (req, res) => {
 
   try {
-    const answer = Function(
-      '"use strict"; return (' + expression + ')'
-    )();
 
-    if (
-      typeof answer !== "number" ||
-      !Number.isFinite(answer)
-    ) {
-      return null;
+    const message = req.body.message;
+
+    if (!message) {
+      return res.status(400).json({
+        error: "No message received"
+      });
     }
 
-    const displayExpression = expression
-      .replace(/\*/g, " × ")
-      .replace(/\//g, " ÷ ");
 
-    return displayExpression + " = " + answer;
-  } catch {
-    return null;
-  }
-}
+    // Check Nova's custom replies first
+    const cleanMessage = message.toLowerCase().trim();
 
+    if (funnyReplies[cleanMessage]) {
 
-// =========================
-// LOCAL REPLY
-// =========================
-function localReply(reply) {
-  setTimeout(() => {
-    addMessage(reply, "ai");
-  }, 300);
-}
+      return res.json({
+        reply: funnyReplies[cleanMessage]
+      });
+
+    }
 
 
-// =========================
-// SAVE CHAT
-// =========================
-function saveCurrentChat() {
-  if (currentChat.length === 0) return;
+    // Otherwise use the real AI
+    const response = await client.responses.create({
 
-  const firstUserMessage = currentChat.find(
-    message => message.type === "user"
-  );
+      model: "gpt-5.6-luna",
 
-  const title = firstUserMessage
-    ? firstUserMessage.text.substring(0, 30)
-    : "New chat";
+      instructions: `
+You are Nova AI ✦.
 
-  if (!currentChatId) {
-    currentChatId = Date.now().toString();
-  }
+Your personality:
+- Friendly
+- Helpful
+- Casual
+- Funny when appropriate
+- You can use emojis naturally
+- Talk like a modern friendly AI
+- Don't overdo slang
+- Help with school, coding, maths, writing,
+  ideas, explanations and general questions
+- If the user asks a serious question,
+  become more serious and helpful
+- Never pretend you know something you don't know
+`,
 
-  const existingIndex = savedChats.findIndex(
-    savedChat => savedChat.id === currentChatId
-  );
+      input: message
 
-  const chatData = {
-    id: currentChatId,
-    title: title,
-    messages: currentChat
-  };
-
-  if (existingIndex >= 0) {
-    savedChats[existingIndex] = chatData;
-  } else {
-    savedChats.unshift(chatData);
-  }
-
-  localStorage.setItem(
-    "novaHistory",
-    JSON.stringify(savedChats)
-  );
-
-  renderHistory();
-}
+    });
 
 
-// =========================
-// HISTORY
-// =========================
-function toggleHistory() {
-  const panel = document.getElementById("historyPanel");
-  const overlay = document.getElementById("historyOverlay");
-
-  panel.classList.toggle("open");
-  overlay.classList.toggle("show");
-
-  renderHistory();
-}
+    res.json({
+      reply: response.output_text
+    });
 
 
-function renderHistory() {
-  const list = document.getElementById("historyList");
+  } catch (error) {
 
-  if (!list) return;
+    console.error("Nova error:", error);
 
-  list.innerHTML = "";
+    res.status(500).json({
+      error: "Nova AI could not get a response."
+    });
 
-  if (savedChats.length === 0) {
-    list.innerHTML = "<p>No chats yet.</p>";
-    return;
   }
 
-  savedChats.forEach(savedChat => {
-    const item = document.createElement("div");
-    item.className = "history-item";
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.textContent = savedChat.title;
-    button.onclick = () => openChat(savedChat.id);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.textContent = "🗑️";
-
-    deleteButton.onclick = event => {
-      deleteChat(event, savedChat.id);
-    };
-
-    item.appendChild(button);
-    item.appendChild(deleteButton);
-
-    list.appendChild(item);
-  });
-}
+});
 
 
-function openChat(id) {
-  const selectedChat = savedChats.find(
-    savedChat => savedChat.id === id
+// ================================
+// START SERVER
+// ================================
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+
+  console.log(
+    `Nova AI server running on port ${PORT}`
   );
 
-  if (!selectedChat) return;
-
-  currentChat = [];
-  currentChatId = selectedChat.id;
-
-  chat.innerHTML = "";
-
-  selectedChat.messages.forEach(message => {
-    addMessage(message.text, message.type);
-  });
-
-  const panel = document.getElementById("historyPanel");
-  const overlay = document.getElementById("historyOverlay");
-
-  panel.classList.remove("open");
-  overlay.classList.remove("show");
-}
-
-
-function deleteChat(event, id) {
-  event.stopPropagation();
-
-  savedChats = savedChats.filter(
-    savedChat => savedChat.id !== id
-  );
-
-  localStorage.setItem(
-    "novaHistory",
-    JSON.stringify(savedChats)
-  );
-
-  renderHistory();
-}
-
-
-// =========================
-// SUGGESTIONS
-// =========================
-function suggest(text) {
-  messageInput.value = text;
-  sendMessage();
-}
-
-
-// =========================
-// ENTER TO SEND
-// =========================
-function handleKey(event) {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
-    sendMessage();
-  }
-}
-
-
-// =========================
-// AUTO RESIZE
-// =========================
-function autoResize(textarea) {
-  textarea.style.height = "auto";
-  textarea.style.height = textarea.scrollHeight + "px";
-}
-
-
-// =========================
-// NEW CHAT
-// =========================
-function newChat() {
-  saveCurrentChat();
-
-  currentChat = [];
-  currentChatId = null;
-
-  chat.innerHTML = `
-    <section class="welcome" id="welcome">
-      <div class="welcome-icon">🚀</div>
-
-      <h2>What can I help you with?</h2>
-
-      <p>
-        Ask me anything. I'm here to help you learn,
-        create and explore.
-      </p>
-
-      <div class="suggestions">
-        <button type="button" onclick="suggest('Explain something to me')">
-          💡 Explain something
-        </button>
-
-        <button type="button" onclick="suggest('Help me write something')">
-          ✍️ Help me write
-        </button>
-
-        <button type="button" onclick="suggest('Give me an idea')">
-          🚀 Give me an idea
-        </button>
-      </div>
-    </section>
-  `;
-
-  messageInput.value = "";
-  autoResize(messageInput);
-}
-
-
-// =========================
-// ESCAPE TEXT
-// =========================
-function escapeHTML(text) {
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-
-// =========================
-// START
-// =========================
-renderHistory();
+});
