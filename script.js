@@ -3,6 +3,9 @@ const userInput = document.getElementById('userInput');
 const messagesList = document.getElementById('messagesList');
 const newChatBtn = document.getElementById('newChatBtn');
 const backBtn = document.getElementById('backBtn');
+const historyList = document.getElementById('historyList');
+
+let activeChatId = null;
 
 function getCurrentTime() {
   const now = new Date();
@@ -17,9 +20,7 @@ function exitChatView() {
   document.body.classList.remove('chat-active');
 }
 
-function appendUserMessage(text, timestamp = getCurrentTime()) {
-  enterChatView();
-
+function renderMessageUI(text, timestamp) {
   const row = document.createElement('div');
   row.className = 'message-row user';
   row.innerHTML = `
@@ -29,7 +30,6 @@ function appendUserMessage(text, timestamp = getCurrentTime()) {
       <div class="timestamp">${timestamp} ✓✓</div>
     </div>
   `;
-
   messagesList.appendChild(row);
   messagesList.scrollTop = messagesList.scrollHeight;
 }
@@ -46,6 +46,103 @@ function escapeHtml(str) {
   });
 }
 
+/* Chat Storage & Session Logic */
+function getSavedSessions() {
+  return JSON.parse(localStorage.getItem('nova_chat_sessions') || '[]');
+}
+
+function saveSessions(sessions) {
+  localStorage.setItem('nova_chat_sessions', JSON.stringify(sessions));
+}
+
+function sendUserMessage(text) {
+  const time = getCurrentTime();
+  enterChatView();
+  renderMessageUI(text, time);
+
+  let sessions = getSavedSessions();
+
+  if (!activeChatId) {
+    activeChatId = Date.now().toString();
+    const newSession = {
+      id: activeChatId,
+      title: text,
+      messages: [{ text, time }]
+    };
+    sessions.unshift(newSession);
+  } else {
+    const session = sessions.find(s => s.id === activeChatId);
+    if (session) {
+      session.messages.push({ text, time });
+    }
+  }
+
+  saveSessions(sessions);
+  renderHistoryUI();
+}
+
+function renderHistoryUI() {
+  const sessions = getSavedSessions();
+  historyList.innerHTML = '';
+
+  sessions.forEach(session => {
+    const item = document.createElement('div');
+    item.className = `history-item ${session.id === activeChatId ? 'active' : ''}`;
+    
+    item.innerHTML = `
+      <span class="history-title-text">${escapeHtml(session.title)}</span>
+      <button class="delete-chat-btn" title="Delete chat">🗑️</button>
+    `;
+
+    item.addEventListener('click', (e) => {
+      if (e.target.classList.contains('delete-chat-btn')) {
+        e.stopPropagation();
+        deleteSession(session.id);
+      } else {
+        loadSession(session.id);
+      }
+    });
+
+    historyList.appendChild(item);
+  });
+}
+
+function loadSession(id) {
+  const sessions = getSavedSessions();
+  const session = sessions.find(s => s.id === id);
+  if (!session) return;
+
+  activeChatId = id;
+  messagesList.innerHTML = '';
+  enterChatView();
+
+  session.messages.forEach(msg => {
+    renderMessageUI(msg.text, msg.time);
+  });
+
+  renderHistoryUI();
+}
+
+function deleteSession(id) {
+  let sessions = getSavedSessions();
+  sessions = sessions.filter(s => s.id !== id);
+  saveSessions(sessions);
+
+  if (activeChatId === id) {
+    startNewChat();
+  } else {
+    renderHistoryUI();
+  }
+}
+
+function startNewChat() {
+  activeChatId = null;
+  messagesList.innerHTML = '';
+  exitChatView();
+  renderHistoryUI();
+}
+
+/* Event Listeners */
 chatForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const text = userInput.value.trim();
@@ -55,42 +152,17 @@ chatForm.addEventListener('submit', (e) => {
   userInput.value = '';
 });
 
-function sendUserMessage(text) {
-  const time = getCurrentTime();
-  appendUserMessage(text, time);
-  saveMessageToStorage(text, time);
-}
-
 function handleChipClick(text) {
   sendUserMessage(text);
 }
 
-function saveMessageToStorage(text, time) {
-  const history = JSON.parse(localStorage.getItem('nova_chat_history') || '[]');
-  history.push({ text, time });
-  localStorage.setItem('nova_chat_history', JSON.stringify(history));
-}
-
-function loadMessageHistory() {
-  const history = JSON.parse(localStorage.getItem('nova_chat_history') || '[]');
-  if (history.length > 0) {
-    enterChatView();
-    history.forEach((msg) => {
-      appendUserMessage(msg.text, msg.time);
-    });
-  }
-}
-
-// Return to front page view
 backBtn.addEventListener('click', () => {
   exitChatView();
 });
 
-// Clear messages & return to home page
 newChatBtn.addEventListener('click', () => {
-  messagesList.innerHTML = '';
-  exitChatView();
-  localStorage.removeItem('nova_chat_history');
+  startNewChat();
 });
 
-loadMessageHistory();
+// Initial Load
+renderHistoryUI();
