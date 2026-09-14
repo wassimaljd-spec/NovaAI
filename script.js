@@ -2,7 +2,7 @@ const chatForm = document.getElementById('chatForm');
 const userInput = document.getElementById('userInput');
 const messagesList = document.getElementById('messagesList');
 const newChatBtn = document.getElementById('newChatBtn');
-const chatContainer = document.querySelector('.chat-container');
+const backBtn = document.getElementById('backBtn');
 
 function getCurrentTime() {
   const now = new Date();
@@ -10,9 +10,11 @@ function getCurrentTime() {
 }
 
 function enterChatView() {
-  if (!chatContainer.classList.contains('chat-active')) {
-    chatContainer.classList.add('chat-active');
-  }
+  document.body.classList.add('chat-active');
+}
+
+function exitChatView() {
+  document.body.classList.remove('chat-active');
 }
 
 function appendUserMessage(text, timestamp = getCurrentTime()) {
@@ -79,9 +81,15 @@ function loadMessageHistory() {
   }
 }
 
+// Return to front page view
+backBtn.addEventListener('click', () => {
+  exitChatView();
+});
+
+// Clear messages & return to home page
 newChatBtn.addEventListener('click', () => {
   messagesList.innerHTML = '';
-  chatContainer.classList.remove('chat-active');
+  exitChatView();
   localStorage.removeItem('nova_chat_history');
 });
 
