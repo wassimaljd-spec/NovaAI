@@ -277,7 +277,7 @@ body.chat-active .back-btn {
 .chat-container {
   flex: 1;
   overflow-y: auto;
-  padding: 0px 22% 24px 22%;
+  padding: 0px 22% 12px 22%; /* Reduced top padding to move feed higher */
   display: flex;
   flex-direction: column;
 }
@@ -292,7 +292,7 @@ body.chat-active #welcomeSection {
 
 .hero-section {
   text-align: center;
-  margin: 10px 0 24px 0;
+  margin: 0 0 16px 0; /* Reduced top margin */
 }
 
 .hero-logo {
@@ -374,6 +374,10 @@ body.chat-active .messages-list {
   flex-direction: row-reverse;
 }
 
+.message-row.ai {
+  align-self: flex-start;
+}
+
 .avatar {
   width: 34px;
   height: 34px;
@@ -397,10 +401,19 @@ body.chat-active .messages-list {
   border-radius: 20px;
   font-size: 0.92rem;
   line-height: 1.45;
+  word-break: break-word;
+}
+
+.message-row.user .bubble {
   background: var(--user-msg-bg);
   border-top-right-radius: 4px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  word-break: break-word;
+}
+
+.message-row.ai .bubble {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top-left-radius: 4px;
 }
 
 .timestamp {
@@ -410,7 +423,14 @@ body.chat-active .messages-list {
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.message-row.user .timestamp {
   justify-content: flex-end;
+}
+
+.message-row.ai .timestamp {
+  justify-content: flex-start;
 }
 
 /* Bottom Input Bar */
