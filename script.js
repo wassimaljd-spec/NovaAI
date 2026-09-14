@@ -34,6 +34,20 @@ function renderMessageUI(text, timestamp) {
   messagesList.scrollTop = messagesList.scrollHeight;
 }
 
+function renderAIMessageUI(text, timestamp) {
+  const row = document.createElement('div');
+  row.className = 'message-row ai';
+  row.innerHTML = `
+    <div class="avatar">✨</div>
+    <div class="message-content">
+      <div class="bubble">${escapeHtml(text)}</div>
+      <div class="timestamp">${timestamp}</div>
+    </div>
+  `;
+  messagesList.appendChild(row);
+  messagesList.scrollTop = messagesList.scrollHeight;
+}
+
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
     return {
@@ -67,18 +81,35 @@ function sendUserMessage(text) {
     const newSession = {
       id: activeChatId,
       title: text,
-      messages: [{ text, time }]
+      messages: [{ sender: 'user', text, time }]
     };
     sessions.unshift(newSession);
   } else {
     const session = sessions.find(s => s.id === activeChatId);
     if (session) {
-      session.messages.push({ text, time });
+      session.messages.push({ sender: 'user', text, time });
     }
   }
 
   saveSessions(sessions);
   renderHistoryUI();
+
+  // AI Automatic Reply Logic
+  const cleanInput = text.trim().toLowerCase();
+  if (cleanInput.includes('fuck you')) {
+    setTimeout(() => {
+      const aiTime = getCurrentTime();
+      const replyText = "Fuck you too!";
+      renderAIMessageUI(replyText, aiTime);
+
+      let updatedSessions = getSavedSessions();
+      const currentSession = updatedSessions.find(s => s.id === activeChatId);
+      if (currentSession) {
+        currentSession.messages.push({ sender: 'ai', text: replyText, time: aiTime });
+        saveSessions(updatedSessions);
+      }
+    }, 400);
+  }
 }
 
 function renderHistoryUI() {
@@ -117,7 +148,11 @@ function loadSession(id) {
   enterChatView();
 
   session.messages.forEach(msg => {
-    renderMessageUI(msg.text, msg.time);
+    if (msg.sender === 'ai') {
+      renderAIMessageUI(msg.text, msg.time);
+    } else {
+      renderMessageUI(msg.text, msg.time);
+    }
   });
 
   renderHistoryUI();
