@@ -54,11 +54,17 @@ body::before {
   z-index: 2;
 }
 
+.sidebar-top {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 70px);
+}
+
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .brand-icon {
@@ -96,8 +102,9 @@ body::before {
   gap: 12px;
   cursor: pointer;
   font-size: 0.9rem;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
 .btn-new-chat:hover {
@@ -106,21 +113,77 @@ body::before {
   transform: translateY(-1px);
 }
 
-.nav-item {
+/* Chat History Styling */
+.history-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.history-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.history-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  color: var(--text-muted);
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 12px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
   transition: all 0.2s ease;
 }
 
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+.history-item:hover,
+.history-item.active {
+  background: rgba(171, 115, 255, 0.15);
+  border-color: rgba(171, 115, 255, 0.3);
   color: #fff;
+}
+
+.history-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.delete-chat-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.history-item:hover .delete-chat-btn {
+  opacity: 1;
+}
+
+.delete-chat-btn:hover {
+  color: #ff5252;
 }
 
 .sidebar-footer {
