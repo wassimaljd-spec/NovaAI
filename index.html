@@ -17,12 +17,9 @@
         <span></span>
       </button>
 
-      <!-- Corner Star Logo Badge -->
+      <!-- Corner Star Logo Badge (Using logo.svg) -->
       <div class="nav-brand-icon">
-        <svg class="star-svg-nav" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 50 10 Q 50 50 90 50 Q 50 50 50 90 Q 50 50 10 50 Q 50 50 50 10 Z" fill="url(#starGrad)" />
-          <path d="M 12 65 C 20 85, 75 85, 85 45 C 80 35, 30 35, 12 65 Z" fill="none" stroke="#c084fc" stroke-width="3" opacity="0.8" />
-        </svg>
+        <img src="logo.svg" alt="Nova AI Logo" class="brand-logo-img" />
       </div>
 
       <div class="nav-brand-text">
@@ -36,28 +33,9 @@
   <!-- Hero Content -->
   <main class="hero-screen">
     
-    <!-- Central Glowing Star Logo Badge -->
+    <!-- Central Glowing Star Logo Badge (Using logo.svg) -->
     <div class="star-logo-container">
-      <svg class="hero-star-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="50%" stop-color="#e9d5ff" />
-            <stop offset="100%" stop-color="#c084fc" />
-          </linearGradient>
-          <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#a855f7" stop-opacity="0.2" />
-            <stop offset="50%" stop-color="#e9d5ff" stop-opacity="1" />
-            <stop offset="100%" stop-color="#a855f7" stop-opacity="0.2" />
-          </linearGradient>
-        </defs>
-
-        <!-- Orbital Ring -->
-        <ellipse cx="50" cy="52" rx="42" ry="16" fill="none" stroke="url(#orbitGrad)" stroke-width="3.5" transform="rotate(-20 50 52)" />
-        
-        <!-- 4-Point Cosmic Sparkle Star -->
-        <path d="M 50 8 Q 50 50 92 50 Q 50 50 50 92 Q 50 50 8 50 Q 50 50 50 8 Z" fill="url(#starGrad)" />
-      </svg>
+      <img src="logo.svg" alt="Nova AI Main Logo" class="hero-logo-img" />
     </div>
 
     <!-- Stylized NOVA AI Vector Title -->
@@ -71,11 +49,17 @@
           </linearGradient>
         </defs>
         <g fill="url(#novaTextGrad)">
+          <!-- N -->
           <path d="M 10 40 L 10 10 L 18 10 L 32 30 L 32 10 L 40 10 L 40 40 L 32 40 L 18 20 L 18 40 Z" />
+          <!-- O -->
           <path d="M 52 10 L 76 10 C 82 10 86 14 86 20 L 86 30 C 86 36 82 40 76 40 L 52 40 C 46 40 42 36 42 30 L 42 20 C 42 14 46 10 52 10 Z M 52 17 C 50 17 49 18 49 20 L 49 30 C 49 32 50 33 52 33 L 76 33 C 78 33 79 32 79 30 L 79 20 C 79 18 78 17 76 17 Z" />
+          <!-- V -->
           <path d="M 92 10 L 100 10 L 109 32 L 118 10 L 126 10 L 113 40 L 105 40 Z" />
+          <!-- A (Custom Λ Chevron) -->
           <path d="M 132 40 L 145 10 L 153 10 L 166 40 L 158 40 L 149 18 L 140 40 Z" />
+          <!-- A (Custom Λ Chevron for AI) -->
           <path d="M 190 40 L 203 10 L 211 10 L 224 40 L 216 40 L 207 18 L 198 40 Z" />
+          <!-- I -->
           <path d="M 232 10 L 240 10 L 240 40 L 232 40 Z" />
         </g>
       </svg>
@@ -108,5 +92,6 @@
     </div>
   </div>
 
+  <script src="script.js"></script>
 </body>
 </html>
