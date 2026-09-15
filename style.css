@@ -1,6 +1,6 @@
 :root {
   --bg-dark: #07030e;
-  --purple-glow: rgba(139, 92, 246, 0.35);
+  --purple-glow: rgba(168, 85, 247, 0.4);
   --accent-purple: #a855f7;
   --pill-border: rgba(168, 85, 247, 0.3);
   --chip-bg: rgba(255, 255, 255, 0.04);
@@ -24,32 +24,32 @@ body {
   position: relative;
   overflow-x: hidden;
 
-  /* Grid pattern matching the screenshot */
+  /* Star Grid Background Pattern */
   background-image: 
     radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-size: 32px 32px;
 }
 
-/* Ambient backlight glow behind the logo */
+/* Backlight Glow Behind Central Logo */
 body::before {
   content: '';
   position: absolute;
-  top: 30%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* Header Bar */
+/* Header */
 .app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 12px 20px;
   background: rgba(7, 3, 14, 0.85);
   backdrop-filter: blur(12px);
   position: sticky;
@@ -85,17 +85,18 @@ body::before {
 .nav-brand-icon {
   width: 40px;
   height: 40px;
-  border-radius: 14px;
-  background: radial-gradient(circle at 30% 30%, #d8b4fe, #7e22ce);
+  border-radius: 12px;
+  background: radial-gradient(circle at 30% 30%, #3b0764, #1e1b4b);
+  border: 1px solid rgba(168, 85, 247, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
 }
 
-.nav-brand-icon span {
-  font-size: 1.1rem;
-  color: #fff;
+.star-svg-nav {
+  width: 26px;
+  height: 26px;
 }
 
 .nav-brand-text {
@@ -124,7 +125,7 @@ body::before {
   cursor: pointer;
 }
 
-/* Hero Section */
+/* Hero Screen */
 .hero-screen {
   flex: 1;
   display: flex;
@@ -136,69 +137,74 @@ body::before {
   z-index: 1;
 }
 
-/* Central Rocket Badge */
-.rocket-container {
-  width: 76px;
-  height: 76px;
-  border-radius: 24px;
-  background: radial-gradient(circle at 30% 30%, #e9d5ff, #7e22ce 60%, #4c1d95);
+/* Center Orbiting Star Badge */
+.star-logo-container {
+  width: 110px;
+  height: 110px;
+  border-radius: 32px;
+  background: radial-gradient(circle at 30% 30%, #581c87, #1e1b4b);
+  border: 1px solid rgba(192, 132, 252, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
 }
 
-.rocket-icon {
-  font-size: 2.2rem;
+.hero-star-svg {
+  width: 80px;
+  height: 80px;
+  filter: drop-shadow(0 0 10px rgba(233, 213, 255, 0.6));
 }
 
-/* Specialized NOVA AI Text Title (SVG Container) */
+/* Vector Title */
 .nova-title-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 0 16px 0;
+  margin-bottom: 6px;
   width: 100%;
 }
 
 .nova-title-svg {
-  width: 220px; /* Precise size for mobile */
+  width: 240px;
   height: auto;
-  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45));
+  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
+}
+
+.tagline {
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: #d8b4fe;
+  margin-bottom: 24px;
+  font-weight: 500;
 }
 
 .hero-prompt {
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 12px;
-  letter-spacing: -0.3px;
+  margin-bottom: 10px;
 }
 
 .hero-description {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
-  max-width: 320px;
+  max-width: 380px;
   line-height: 1.5;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
-/* Chips Container */
+/* Chips */
 .chips-group {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: center;
   width: 100%;
-  max-width: 360px;
 }
 
 .chip-row {
   display: flex;
   gap: 10px;
-  justify-content: center;
-}
-
-.chip-row.center {
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -206,21 +212,20 @@ body::before {
   background: var(--chip-bg);
   border: 1px solid var(--pill-border);
   color: var(--text-primary);
-  padding: 10px 18px;
+  padding: 8px 16px;
   border-radius: 24px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   backdrop-filter: blur(8px);
   cursor: pointer;
-  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
 .prompt-chip:hover {
-  background: rgba(168, 85, 247, 0.15);
+  background: rgba(168, 85, 247, 0.2);
   border-color: var(--accent-purple);
 }
 
-/* Bottom Input Dock */
+/* Bottom Bar */
 .input-dock-fixed {
   position: fixed;
   bottom: 0;
@@ -235,7 +240,7 @@ body::before {
 
 .input-bar {
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(168, 85, 247, 0.25);
   border-radius: 30px;
