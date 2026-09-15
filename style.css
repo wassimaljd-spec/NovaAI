@@ -30,7 +30,7 @@ body {
   background-size: 32px 32px;
 }
 
-/* Backlight Glow Behind Central Logo */
+/* Ambient Purple Glow Behind Hero Logo */
 body::before {
   content: '';
   position: absolute;
@@ -44,7 +44,7 @@ body::before {
   z-index: 0;
 }
 
-/* Header */
+/* Header Section */
 .app-header {
   display: flex;
   align-items: center;
@@ -82,21 +82,23 @@ body::before {
   display: block;
 }
 
+/* Corner Logo Container */
 .nav-brand-icon {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  background: radial-gradient(circle at 30% 30%, #3b0764, #1e1b4b);
-  border: 1px solid rgba(168, 85, 247, 0.4);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
 }
 
-.star-svg-nav {
-  width: 26px;
-  height: 26px;
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-brand-text {
@@ -125,7 +127,7 @@ body::before {
   cursor: pointer;
 }
 
-/* Hero Screen */
+/* Hero Main Section */
 .hero-screen {
   flex: 1;
   display: flex;
@@ -137,24 +139,24 @@ body::before {
   z-index: 1;
 }
 
-/* Center Orbiting Star Badge */
+/* Main Center Hero Logo Container */
 .star-logo-container {
-  width: 110px;
-  height: 110px;
-  border-radius: 32px;
-  background: radial-gradient(circle at 30% 30%, #581c87, #1e1b4b);
-  border: 1px solid rgba(192, 132, 252, 0.4);
+  width: 120px;
+  height: 120px;
+  border-radius: 28px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
 }
 
-.hero-star-svg {
-  width: 80px;
-  height: 80px;
-  filter: drop-shadow(0 0 10px rgba(233, 213, 255, 0.6));
+.hero-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 /* Vector Title */
@@ -194,7 +196,7 @@ body::before {
   margin-bottom: 28px;
 }
 
-/* Chips */
+/* Prompt Chips */
 .chips-group {
   display: flex;
   justify-content: center;
@@ -225,7 +227,7 @@ body::before {
   border-color: var(--accent-purple);
 }
 
-/* Bottom Bar */
+/* Fixed Bottom Dock */
 .input-dock-fixed {
   position: fixed;
   bottom: 0;
