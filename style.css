@@ -277,7 +277,7 @@ body.chat-active .back-btn {
 .chat-container {
   flex: 1;
   overflow-y: auto;
-  padding: 0px 22% 12px 22%; /* Reduced top padding to move feed higher */
+  padding: 0px 22% 12px 22%;
   display: flex;
   flex-direction: column;
 }
@@ -292,7 +292,7 @@ body.chat-active #welcomeSection {
 
 .hero-section {
   text-align: center;
-  margin: 0 0 16px 0; /* Reduced top margin */
+  margin: 0 0 16px 0;
 }
 
 .hero-logo {
@@ -435,7 +435,7 @@ body.chat-active .messages-list {
 
 /* Bottom Input Bar */
 .input-dock {
-  padding: 0 22% 28px 22%;
+  padding: 0 22% 60px 22%; /* Increased bottom padding to position the input higher */
 }
 
 .input-container {
@@ -461,7 +461,7 @@ body.chat-active .messages-list {
   outline: none;
   color: #fff;
   font-size: 0.95rem;
-  padding: 8px 0;
+  padding: 12px 0; /* Slightly taller input area */
 }
 
 .input-container input::placeholder {
