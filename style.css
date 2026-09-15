@@ -55,6 +55,7 @@ body::before {
   position: sticky;
   top: 0;
   z-index: 10;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .header-left {
@@ -144,7 +145,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
 }
 
@@ -152,15 +153,30 @@ body::before {
   font-size: 2.2rem;
 }
 
-.hero-title {
-  font-size: 1.8rem;
+/* Specialized NOVA AI Text Title (SVG Container) */
+.nova-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 16px 0;
+  width: 100%;
+}
+
+.nova-title-svg {
+  width: 220px; /* Precise size for mobile */
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.45));
+}
+
+.hero-prompt {
+  font-size: 1.7rem;
   font-weight: 700;
   margin-bottom: 12px;
   letter-spacing: -0.3px;
 }
 
 .hero-description {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
   max-width: 320px;
   line-height: 1.5;
@@ -196,6 +212,12 @@ body::before {
   backdrop-filter: blur(8px);
   cursor: pointer;
   white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.prompt-chip:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: var(--accent-purple);
 }
 
 /* Bottom Input Dock */
