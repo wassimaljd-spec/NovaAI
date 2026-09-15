@@ -17,9 +17,34 @@
         <span></span>
       </button>
 
-      <!-- Corner Star Logo Badge (Using logo.svg) -->
+      <!-- Corner Star Logo Badge (Embedded SVG) -->
       <div class="nav-brand-icon">
-        <img src="logo.svg" alt="Nova AI Logo" class="brand-logo-img" />
+        <svg viewBox="0 0 500 500" class="brand-logo-img" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="cardGradNav" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#500f80" />
+              <stop offset="100%" stop-color="#1d0438" />
+            </linearGradient>
+            <linearGradient id="borderGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#c084fc" />
+              <stop offset="100%" stop-color="#581c87" />
+            </linearGradient>
+            <linearGradient id="starCoreNav" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="50%" stop-color="#e9d5ff" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+            <linearGradient id="orbitGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="60%" stop-color="#c084fc" />
+              <stop offset="100%" stop-color="#6b21a8" />
+            </linearGradient>
+          </defs>
+          <rect x="50" y="50" width="400" height="400" rx="90" fill="url(#cardGradNav)" stroke="url(#borderGradNav)" stroke-width="8" />
+          <path d="M 330 180 C 400 170 410 220 370 250" fill="none" stroke="url(#orbitGradNav)" stroke-width="12" stroke-linecap="round" />
+          <path d="M 250 140 Q 250 250 360 250 Q 250 250 250 360 Q 250 250 140 250 Q 250 250 250 140 Z" fill="url(#starCoreNav)" />
+          <path d="M 10 400 C 0 320 120 280 220 380" fill="none" stroke="url(#orbitGradNav)" stroke-width="14" stroke-linecap="round" />
+        </svg>
       </div>
 
       <div class="nav-brand-text">
@@ -33,9 +58,34 @@
   <!-- Hero Content -->
   <main class="hero-screen">
     
-    <!-- Central Glowing Star Logo Badge (Using logo.svg) -->
+    <!-- Central Glowing Star Logo Badge (Embedded SVG) -->
     <div class="star-logo-container">
-      <img src="logo.svg" alt="Nova AI Main Logo" class="hero-logo-img" />
+      <svg viewBox="0 0 500 500" class="hero-logo-img" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cardGradHero" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#500f80" />
+            <stop offset="100%" stop-color="#1d0438" />
+          </linearGradient>
+          <linearGradient id="borderGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c084fc" />
+            <stop offset="100%" stop-color="#581c87" />
+          </linearGradient>
+          <linearGradient id="starCoreHero" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="50%" stop-color="#e9d5ff" />
+            <stop offset="100%" stop-color="#a855f7" />
+          </linearGradient>
+          <linearGradient id="orbitGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="60%" stop-color="#c084fc" />
+            <stop offset="100%" stop-color="#6b21a8" />
+          </linearGradient>
+        </defs>
+        <rect x="50" y="50" width="400" height="400" rx="90" fill="url(#cardGradHero)" stroke="url(#borderGradHero)" stroke-width="8" />
+        <path d="M 330 180 C 400 170 410 220 370 250" fill="none" stroke="url(#orbitGradHero)" stroke-width="12" stroke-linecap="round" />
+        <path d="M 250 140 Q 250 250 360 250 Q 250 250 250 360 Q 250 250 140 250 Q 250 250 250 140 Z" fill="url(#starCoreHero)" />
+        <path d="M 10 400 C 0 320 120 280 220 380" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
+      </svg>
     </div>
 
     <!-- Stylized NOVA AI Vector Title -->
