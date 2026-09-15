@@ -94,22 +94,46 @@ function sendUserMessage(text) {
   saveSessions(sessions);
   renderHistoryUI();
 
-  // AI Automatic Reply Logic
+  // --- Dynamic AI Automatic Reply Logic ---
   const cleanInput = text.trim().toLowerCase();
-  if (cleanInput.includes('fuck you')) {
-    setTimeout(() => {
-      const aiTime = getCurrentTime();
-      const replyText = "Fuck you too!";
-      renderAIMessageUI(replyText, aiTime);
+  
+  // Custom Response Library
+  const responses = {
+    "fuck you": "Fuck you too!",
+    "hi": "Hey there! How can I help you today?",
+    "hello": "Hello! What are we working on today?",
+    "hey": "Hey! How's it going?",
+    "who are you": "I'm NOVA, your personal AI assistant.",
+    "your name": "My name is NOVA!",
+    "how are you": "Running at 100% efficiency!",
+    "thank": "You're welcome! Let me know if you need anything else.",
+    "bye": "Catch you later! Have a great day.",
+    "joke": "Why do programmers prefer dark mode? Because light attracts bugs!",
+    "ping": "Pong! 🏓"
+  };
 
-      let updatedSessions = getSavedSessions();
-      const currentSession = updatedSessions.find(s => s.id === activeChatId);
-      if (currentSession) {
-        currentSession.messages.push({ sender: 'ai', text: replyText, time: aiTime });
-        saveSessions(updatedSessions);
-      }
-    }, 400);
+  let replyText = "I received your message! (Connect me to an API to get real answers)."; // Default fallback
+
+  // Check input against keywords
+  for (const [key, val] of Object.entries(responses)) {
+    if (cleanInput.includes(key)) {
+      replyText = val;
+      break;
+    }
   }
+
+  // Trigger AI response after a slight delay
+  setTimeout(() => {
+    const aiTime = getCurrentTime();
+    renderAIMessageUI(replyText, aiTime);
+
+    let updatedSessions = getSavedSessions();
+    const currentSession = updatedSessions.find(s => s.id === activeChatId);
+    if (currentSession) {
+      currentSession.messages.push({ sender: 'ai', text: replyText, time: aiTime });
+      saveSessions(updatedSessions);
+    }
+  }, 400);
 }
 
 function renderHistoryUI() {
