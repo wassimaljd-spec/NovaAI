@@ -3,118 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NOVA AI</title>
+  <title>Nova AI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-top">
-      <div class="brand">
-        <div class="brand-icon">
-          <svg viewBox="0 0 100 100" fill="none" class="sidebar-logo-svg">
-            <ellipse cx="50" cy="50" rx="38" ry="14" stroke="#d8b4fe" stroke-width="3" transform="rotate(-22 50 50)" opacity="0.8" />
-            <path d="M 50 25 C 50 37.5 37.5 50 25 50 C 37.5 50 50 62.5 50 75 C 50 62.5 62.5 50 75 50 C 62.5 50 50 37.5 50 25 Z" fill="#d8b4fe" />
-          </svg>
-        </div>
-        <div>
-          <div class="brand-title">NOVA AI</div>
-          <div class="brand-subtitle">Think ✦ Create ✦ Explore</div>
-        </div>
-      </div>
-
-      <button class="btn-new-chat" id="newChatBtn">
-        <span>✏️</span> New Chat
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <button class="menu-btn" aria-label="Open Menu">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
+      <div class="brand-avatar">
+        <span>✦</span>
+      </div>
+      <div class="brand-info">
+        <h1 class="brand-title">Nova AI</h1>
+        <p class="brand-subtitle">Always ready to help</p>
+      </div>
+    </div>
+    <button class="new-chat-pill">+ New chat</button>
+  </header>
 
-      <div class="history-section">
-        <div class="history-title">Chat History</div>
-        <div class="history-list" id="historyList"></div>
+  <!-- Main Hero Screen -->
+  <main class="hero-container">
+    
+    <!-- Rocket Icon Container -->
+    <div class="rocket-badge">
+      <span class="rocket-emoji">🚀</span>
+    </div>
+
+    <!-- Centered Headings -->
+    <h2 class="main-heading">What can I help you with?</h2>
+    <p class="sub-heading">Ask me anything. I'm here to help you learn, create and explore.</p>
+
+    <!-- Prompt Chips Grid -->
+    <div class="chips-wrapper">
+      <div class="chip-row">
+        <button class="pill-chip">💡 Explain something</button>
+        <button class="pill-chip">✍️ Help me write</button>
+      </div>
+      <div class="chip-row single">
+        <button class="pill-chip">🚀 Give me an idea</button>
       </div>
     </div>
 
-    <div class="sidebar-footer">
-      <p>Better questions create a brighter future. ✦</p>
-    </div>
-  </aside>
-
-  <!-- Main View -->
-  <main class="main-content">
-    <header class="top-bar">
-      <button class="icon-btn back-btn" id="backBtn" title="Back to Home">←</button>
-      <div class="status-badge">
-        <span class="status-dot"></span>
-        Nova AI ✦
-      </div>
-    </header>
-
-    <!-- Chat Container -->
-    <div class="chat-container">
-      
-      <!-- Landing Hero Section -->
-      <section id="welcomeSection">
-        <div class="hero-section">
-          <div class="hero-logo">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="nova-logo-svg">
-              <defs>
-                <linearGradient id="novaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#e9d5ff" />
-                  <stop offset="50%" stop-color="#a855f7" />
-                  <stop offset="100%" stop-color="#6366f1" />
-                </linearGradient>
-              </defs>
-
-              <!-- Outer Orbit Ring -->
-              <ellipse cx="50" cy="50" rx="38" ry="14" 
-                       stroke="url(#novaGrad)" stroke-width="2.5" 
-                       transform="rotate(-22 50 50)" 
-                       opacity="0.9" />
-
-              <!-- Central 4-Point Star -->
-              <path d="M 50 22 C 50 37.5 37.5 50 22 50 C 37.5 50 50 62.5 50 78 C 50 62.5 62.5 50 78 50 C 62.5 50 50 37.5 50 22 Z" 
-                    fill="url(#novaGrad)" />
-
-              <!-- Ambient Sparkles -->
-              <path d="M 78 18 C 78 21 75 24 72 24 C 75 24 78 27 78 30 C 78 27 81 24 84 24 C 81 24 78 21 78 18 Z" fill="#e9d5ff" />
-              <path d="M 24 70 C 24 71.5 22.5 73 21 73 C 22.5 73 24 74.5 24 76 C 24 74.5 25.5 73 27 73 C 25.5 73 24 71.5 24 70 Z" fill="#c084fc" opacity="0.85" />
-            </svg>
-          </div>
-
-          <h1 class="hero-title">NOVA AI</h1>
-          <p class="hero-subtitle">Your AI assistant ✦ Always here for you</p>
-        </div>
-
-        <div class="chips-grid">
-          <div class="chip" onclick="handleChipClick('Explain something')">
-            <span>💡</span> Explain something
-          </div>
-          <div class="chip" onclick="handleChipClick('Help me write')">
-            <span>✏️</span> Help me write
-          </div>
-          <div class="chip" onclick="handleChipClick('Give me an idea')">
-            <span>🚀</span> Give me an idea
-          </div>
-          <div class="chip" onclick="handleChipClick('Do some maths')">
-            <span>🧮</span> Do some maths
-          </div>
-        </div>
-      </section>
-
-      <!-- Message History Feed -->
-      <div class="messages-list" id="messagesList"></div>
-    </div>
-
-    <!-- Bottom Input Dock -->
-    <div class="input-dock">
-      <form class="input-container" id="chatForm">
-        <button type="button" class="action-icon" title="Attach file">📎</button>
-        <input type="text" id="userInput" placeholder="Type a message..." autocomplete="off" />
-        <button type="submit" class="btn-send" title="Send message">➔</button>
-      </form>
-    </div>
   </main>
 
-  <script src="script.js"></script>
+  <!-- Bottom Input Bar Area -->
+  <div class="bottom-dock">
+    <div class="input-pill">
+      <input type="text" placeholder="Message Nova AI..." disabled />
+      <button class="send-btn-purple">➔</button>
+    </div>
+  </div>
+
 </body>
 </html>
