@@ -12,113 +12,107 @@
   <aside class="sidebar">
     <div class="sidebar-top">
       <div class="brand">
-        <div class="brand-icon">✨</div>
+        <div class="brand-icon">
+          <svg viewBox="0 0 100 100" fill="none" class="sidebar-logo-svg">
+            <ellipse cx="50" cy="50" rx="38" ry="14" stroke="#d8b4fe" stroke-width="3" transform="rotate(-22 50 50)" opacity="0.8" />
+            <path d="M 50 25 C 50 37.5 37.5 50 25 50 C 37.5 50 50 62.5 50 75 C 50 62.5 62.5 50 75 50 C 62.5 50 50 37.5 50 25 Z" fill="#d8b4fe" />
+          </svg>
+        </div>
         <div>
-          <h2 class="brand-title">NOVA AI</h2>
-          <p class="brand-subtitle">INTELLIGENT ASSISTANT</p>
+          <div class="brand-title">NOVA AI</div>
+          <div class="brand-subtitle">Think ✦ Create ✦ Explore</div>
         </div>
       </div>
 
       <button class="btn-new-chat" id="newChatBtn">
-        <span>+</span> New Chat
+        <span>✏️</span> New Chat
       </button>
 
-      <!-- Dynamic Chat History Section -->
       <div class="history-section">
-        <div class="history-title">💬 Chat History</div>
-        <div class="history-list" id="historyList">
-          <!-- Chat sessions render here -->
-        </div>
+        <div class="history-title">Chat History</div>
+        <div class="history-list" id="historyList"></div>
       </div>
     </div>
 
     <div class="sidebar-footer">
-      <p>Powered by NOVA Engine<br><small>v2.4 Pro Edition</small></p>
-      <span class="footer-sparkle">✦</span>
+      <p>Better questions create a brighter future. ✦</p>
     </div>
   </aside>
 
-  <!-- Main Content -->
+  <!-- Main View -->
   <main class="main-content">
-    
-    <!-- Top Bar -->
     <header class="top-bar">
-      <button class="icon-btn back-btn" id="backBtn" title="Go Back">←</button>
-
+      <button class="icon-btn back-btn" id="backBtn" title="Back to Home">←</button>
       <div class="status-badge">
         <span class="status-dot"></span>
-        <span>Online</span>
+        Nova AI ✦
       </div>
-      <button class="icon-btn" title="Toggle Theme">🌙</button>
-      <button class="icon-btn" title="User Profile">👤</button>
     </header>
 
     <!-- Chat Container -->
     <div class="chat-container">
       
-      <!-- Landing / Welcome Hero Section -->
-      <div id="welcomeSection">
-        <section class="hero-section">
+      <!-- Landing Hero Section -->
+      <section id="welcomeSection">
+        <div class="hero-section">
           <div class="hero-logo">
-            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="nova-logo-svg">
               <defs>
-                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-                <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#ffffff" />
-                  <stop offset="50%" stop-color="#e0b3ff" />
-                  <stop offset="100%" stop-color="#9d65ff" />
-                </linearGradient>
-                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#b17aff" stop-opacity="0.9" />
-                  <stop offset="50%" stop-color="#6e3aff" stop-opacity="0.5" />
-                  <stop offset="100%" stop-color="#3d148a" stop-opacity="0.2" />
+                <linearGradient id="novaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#e9d5ff" />
+                  <stop offset="50%" stop-color="#a855f7" />
+                  <stop offset="100%" stop-color="#6366f1" />
                 </linearGradient>
               </defs>
 
-              <circle cx="60" cy="60" r="34" fill="rgba(112, 66, 210, 0.25)" filter="url(#glow)" />
-              <circle cx="60" cy="60" r="34" stroke="url(#starGrad)" stroke-width="1.2" stroke-opacity="0.4" />
-              <ellipse cx="60" cy="60" rx="46" ry="16" fill="none" stroke="url(#ringGrad)" stroke-width="2.5" transform="rotate(-25 60 60)" filter="url(#glow)" />
-              
-              <path d="M72 26 L73.5 31.5 L79 33 L73.5 34.5 L72 40 L70.5 34.5 L65 33 L70.5 31.5 Z" fill="#ffffff" filter="url(#glow)" />
-              <path d="M26 60 L27.5 63.5 L31 65 L27.5 66.5 L26 70 L24.5 66.5 L21 65 L24.5 63.5 Z" fill="#c39eff" filter="url(#glow)" />
-              <path d="M79 70 L80 73 L83 74 L80 75 L79 78 L78 75 L75 74 L78 73 Z" fill="#a26bff" />
+              <!-- Outer Orbit Ring -->
+              <ellipse cx="50" cy="50" rx="38" ry="14" 
+                       stroke="url(#novaGrad)" stroke-width="2.5" 
+                       transform="rotate(-22 50 50)" 
+                       opacity="0.9" />
 
-              <path d="M60 22 C60 42 42 60 22 60 C42 60 60 78 60 98 C60 78 78 60 98 60 C78 60 60 42 60 22 Z" fill="url(#starGrad)" filter="url(#glow)" />
-              <path d="M60 36 C60 48 48 60 36 60 C48 60 60 72 60 84 C60 72 72 60 84 60 C72 60 60 48 60 36 Z" fill="#ffffff" opacity="0.6" />
+              <!-- Central 4-Point Star -->
+              <path d="M 50 22 C 50 37.5 37.5 50 22 50 C 37.5 50 50 62.5 50 78 C 50 62.5 62.5 50 78 50 C 62.5 50 50 37.5 50 22 Z" 
+                    fill="url(#novaGrad)" />
+
+              <!-- Ambient Sparkles -->
+              <path d="M 78 18 C 78 21 75 24 72 24 C 75 24 78 27 78 30 C 78 27 81 24 84 24 C 81 24 78 21 78 18 Z" fill="#e9d5ff" />
+              <path d="M 24 70 C 24 71.5 22.5 73 21 73 C 22.5 73 24 74.5 24 76 C 24 74.5 25.5 73 27 73 C 25.5 73 24 71.5 24 70 Z" fill="#c084fc" opacity="0.85" />
             </svg>
           </div>
+
           <h1 class="hero-title">NOVA AI</h1>
-          <p class="hero-subtitle">Your AI assistant &nbsp;✦&nbsp; Always here for you</p>
-        </section>
+          <p class="hero-subtitle">Your AI assistant ✦ Always here for you</p>
+        </div>
 
-        <!-- Prompt Chips -->
-        <section class="chips-grid">
-          <div class="chip" onclick="handleChipClick('Explain something')">💡 Explain something</div>
-          <div class="chip" onclick="handleChipClick('Help me write')">✏️ Help me write</div>
-          <div class="chip" onclick="handleChipClick('Give me an idea')">🚀 Give me an idea</div>
-          <div class="chip" onclick="handleChipClick('Do some maths')">🧮 Do some maths</div>
-        </section>
-      </div>
+        <div class="chips-grid">
+          <div class="chip" onclick="handleChipClick('Explain something')">
+            <span>💡</span> Explain something
+          </div>
+          <div class="chip" onclick="handleChipClick('Help me write')">
+            <span>✏️</span> Help me write
+          </div>
+          <div class="chip" onclick="handleChipClick('Give me an idea')">
+            <span>🚀</span> Give me an idea
+          </div>
+          <div class="chip" onclick="handleChipClick('Do some maths')">
+            <span>🧮</span> Do some maths
+          </div>
+        </div>
+      </section>
 
-      <!-- Message Feed -->
+      <!-- Message History Feed -->
       <div class="messages-list" id="messagesList"></div>
     </div>
 
-    <!-- Input Dock -->
+    <!-- Bottom Input Dock -->
     <div class="input-dock">
       <form class="input-container" id="chatForm">
-        <input type="text" id="userInput" placeholder="Ask NOVA anything..." autocomplete="off" />
-        <div class="input-actions">
-          <button type="button" class="action-icon" title="Attach file">📎</button>
-          <button type="button" class="action-icon" title="Voice input">🎙️</button>
-          <button type="submit" class="btn-send" title="Send message">➔</button>
-        </div>
+        <button type="button" class="action-icon" title="Attach file">📎</button>
+        <input type="text" id="userInput" placeholder="Type a message..." autocomplete="off" />
+        <button type="submit" class="btn-send" title="Send message">➔</button>
       </form>
     </div>
-
   </main>
 
   <script src="script.js"></script>
