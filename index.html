@@ -8,55 +8,56 @@
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
-  <header class="top-nav">
-    <div class="nav-left">
-      <button class="menu-btn" aria-label="Open Menu">
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <button class="hamburger-btn" aria-label="Menu">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <div class="brand-avatar">
+      <div class="nav-brand-icon">
         <span>✦</span>
       </div>
-      <div class="brand-info">
-        <h1 class="brand-title">Nova AI</h1>
-        <p class="brand-subtitle">Always ready to help</p>
+      <div class="nav-brand-text">
+        <h1 class="brand-name">Nova AI</h1>
+        <p class="brand-sub">Always ready to help</p>
       </div>
     </div>
-    <button class="new-chat-pill">+ New chat</button>
+    <button class="pill-btn-new">+ New chat</button>
   </header>
 
-  <!-- Main Hero Screen -->
-  <main class="hero-container">
+  <!-- Hero Content -->
+  <main class="hero-screen">
     
-    <!-- Rocket Icon Container -->
-    <div class="rocket-badge">
-      <span class="rocket-emoji">🚀</span>
+    <!-- Glowing Rocket Container -->
+    <div class="rocket-container">
+      <span class="rocket-icon">🚀</span>
     </div>
 
-    <!-- Centered Headings -->
-    <h2 class="main-heading">What can I help you with?</h2>
-    <p class="sub-heading">Ask me anything. I'm here to help you learn, create and explore.</p>
+    <h2 class="hero-title">What can I help you with?</h2>
+    <p class="hero-description">
+      Ask me anything. I'm here to help you learn, create and explore.
+    </p>
 
-    <!-- Prompt Chips Grid -->
-    <div class="chips-wrapper">
+    <!-- Chips Layout -->
+    <div class="chips-group">
       <div class="chip-row">
-        <button class="pill-chip">💡 Explain something</button>
-        <button class="pill-chip">✍️ Help me write</button>
+        <button class="prompt-chip">💡 Explain something</button>
+        <button class="prompt-chip">✍️ Help me write</button>
       </div>
-      <div class="chip-row single">
-        <button class="pill-chip">🚀 Give me an idea</button>
+      <div class="chip-row center">
+        <button class="prompt-chip">🚀 Give me an idea</button>
       </div>
     </div>
 
   </main>
 
-  <!-- Bottom Input Bar Area -->
-  <div class="bottom-dock">
-    <div class="input-pill">
-      <input type="text" placeholder="Message Nova AI..." disabled />
-      <button class="send-btn-purple">➔</button>
+  <!-- Bottom Input Bar -->
+  <div class="input-dock-fixed">
+    <div class="input-bar">
+      <input type="text" placeholder="Type a message..." readonly />
+      <button class="send-circle-btn">➔</button>
     </div>
   </div>
 
