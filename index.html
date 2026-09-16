@@ -17,7 +17,7 @@
         <span></span>
       </button>
 
-      <!-- Corner Star Logo Badge (Embedded SVG) -->
+      <!-- Corner Star Logo Badge -->
       <div class="nav-brand-icon">
         <svg viewBox="0 0 500 500" class="brand-logo-img" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -52,13 +52,12 @@
         <p class="brand-sub">Always ready to help</p>
       </div>
     </div>
-    <button class="pill-btn-new">+ New chat</button>
+    <button class="pill-btn-new" id="new-chat-btn">+ New chat</button>
   </header>
 
-  <!-- Hero Content -->
-  <main class="hero-screen">
+  <!-- Hero Landing Screen -->
+  <main class="hero-screen" id="hero-screen">
     
-    <!-- Central Glowing Star Logo Badge (Embedded SVG) -->
     <div class="star-logo-container">
       <svg viewBox="0 0 500 500" class="hero-logo-img" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -88,7 +87,6 @@
       </svg>
     </div>
 
-    <!-- Stylized NOVA AI Vector Title -->
     <div class="nova-title-container">
       <svg viewBox="0 0 320 50" class="nova-title-svg" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -99,23 +97,16 @@
           </linearGradient>
         </defs>
         <g fill="url(#novaTextGrad)">
-          <!-- N -->
           <path d="M 10 40 L 10 10 L 18 10 L 32 30 L 32 10 L 40 10 L 40 40 L 32 40 L 18 20 L 18 40 Z" />
-          <!-- O -->
           <path d="M 52 10 L 76 10 C 82 10 86 14 86 20 L 86 30 C 86 36 82 40 76 40 L 52 40 C 46 40 42 36 42 30 L 42 20 C 42 14 46 10 52 10 Z M 52 17 C 50 17 49 18 49 20 L 49 30 C 49 32 50 33 52 33 L 76 33 C 78 33 79 32 79 30 L 79 20 C 79 18 78 17 76 17 Z" />
-          <!-- V -->
           <path d="M 92 10 L 100 10 L 109 32 L 118 10 L 126 10 L 113 40 L 105 40 Z" />
-          <!-- A (Custom Λ Chevron) -->
           <path d="M 132 40 L 145 10 L 153 10 L 166 40 L 158 40 L 149 18 L 140 40 Z" />
-          <!-- A (Custom Λ Chevron for AI) -->
           <path d="M 190 40 L 203 10 L 211 10 L 224 40 L 216 40 L 207 18 L 198 40 Z" />
-          <!-- I -->
           <path d="M 232 10 L 240 10 L 240 40 L 232 40 Z" />
         </g>
       </svg>
     </div>
 
-    <!-- Tagline -->
     <p class="tagline">Think ✦ Create ✦ Explore</p>
 
     <h2 class="hero-prompt">What can I help you with?</h2>
@@ -123,7 +114,6 @@
       Ask me anything. I'm here to help you learn, create and explore.
     </p>
 
-    <!-- Chips Layout -->
     <div class="chips-group">
       <div class="chip-row">
         <button class="prompt-chip">💡 Explain something</button>
@@ -134,12 +124,15 @@
 
   </main>
 
+  <!-- Active Chat Feed Container (Hidden by Default) -->
+  <div class="chat-feed hidden" id="chat-feed"></div>
+
   <!-- Bottom Input Bar -->
   <div class="input-dock-fixed">
-    <div class="input-bar">
-      <input type="text" placeholder="Type your message..." readonly />
-      <button class="send-circle-btn">➔</button>
-    </div>
+    <form class="input-bar" id="chat-form">
+      <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" />
+      <button type="submit" class="send-circle-btn">➔</button>
+    </form>
   </div>
 
   <script src="script.js"></script>
