@@ -4,11 +4,326 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nova AI</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-dark: #07030e;
+      --purple-glow: rgba(168, 85, 247, 0.4);
+      --accent-purple: #a855f7;
+      --pill-border: rgba(168, 85, 247, 0.3);
+      --chip-bg: rgba(255, 255, 255, 0.04);
+      --text-primary: #ffffff;
+      --text-muted: #8e88a0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* App Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(7, 3, 14, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hamburger-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger-btn span {
+      width: 18px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 2px;
+      display: block;
+    }
+
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-brand-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #ffffff;
+    }
+
+    .brand-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      line-height: 1.1;
+    }
+
+    .pill-btn-new {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid var(--pill-border);
+      color: #d8b4fe;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    /* Centered Hero Main Content */
+    .hero-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px 120px 24px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .hero-screen.hidden {
+      display: none !important;
+    }
+
+    /* Stacked Logo + Title Block */
+    .hero-brand-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .star-logo-container {
+      width: 130px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 25px rgba(168, 85, 247, 0.6));
+    }
+
+    .hero-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .nova-title-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nova-title-svg {
+      width: 220px;
+      height: auto;
+      filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
+    }
+
+    .tagline {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #d8b4fe;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .hero-prompt {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .hero-description {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      max-width: 380px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+
+    .chips-group {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .chip-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .prompt-chip {
+      background: var(--chip-bg);
+      border: 1px solid var(--pill-border);
+      color: var(--text-primary);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    /* Active Chat Feed */
+    .chat-feed {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 20px 20px 120px 20px;
+      overflow-y: auto;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .chat-feed.hidden {
+      display: none !important;
+    }
+
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: 18px;
+      max-width: 85%;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .user-msg {
+      align-self: flex-end;
+      background: #a855f7;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai-msg {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      color: #f3e8ff;
+      border-bottom-left-radius: 4px;
+    }
+
+    /* Fixed Input Dock */
+    .input-dock-fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      background: linear-gradient(to top, #07030e 85%, transparent);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+    }
+
+    .input-bar {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 30px;
+      padding: 6px 8px 6px 20px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(12px);
+    }
+
+    .input-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .send-circle-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #a855f7;
+      border: none;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Top App Bar -->
+  <!-- App Header -->
   <header class="app-header">
     <div class="header-left">
       <button class="hamburger-btn" aria-label="Menu">
@@ -17,94 +332,112 @@
         <span></span>
       </button>
 
-      <!-- Corner Star Logo Badge -->
-      <div class="nav-brand-icon">
-        <svg viewBox="0 0 500 500" class="brand-logo-img" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="cardGradNav" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#500f80" />
-              <stop offset="100%" stop-color="#1d0438" />
-            </linearGradient>
-            <linearGradient id="borderGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#c084fc" />
-              <stop offset="100%" stop-color="#581c87" />
-            </linearGradient>
-            <linearGradient id="starCoreNav" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff" />
-              <stop offset="50%" stop-color="#e9d5ff" />
-              <stop offset="100%" stop-color="#a855f7" />
-            </linearGradient>
-            <linearGradient id="orbitGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff" />
-              <stop offset="60%" stop-color="#c084fc" />
-              <stop offset="100%" stop-color="#6b21a8" />
-            </linearGradient>
-          </defs>
-          <rect x="50" y="50" width="400" height="400" rx="90" fill="url(#cardGradNav)" stroke="url(#borderGradNav)" stroke-width="8" />
-          <path d="M 330 180 C 400 170 410 220 370 250" fill="none" stroke="url(#orbitGradNav)" stroke-width="12" stroke-linecap="round" />
-          <path d="M 250 140 Q 250 250 360 250 Q 250 250 250 360 Q 250 250 140 250 Q 250 250 250 140 Z" fill="url(#starCoreNav)" />
-          <path d="M 10 400 C 0 320 120 280 220 380" fill="none" stroke="url(#orbitGradNav)" stroke-width="14" stroke-linecap="round" />
-        </svg>
-      </div>
-
-      <div class="nav-brand-text">
-        <h1 class="brand-name">Nova AI</h1>
-        <p class="brand-sub">Always ready to help</p>
+      <div class="nav-brand-group">
+        <div class="nav-brand-icon">
+          <svg viewBox="0 0 500 500" class="brand-logo-img" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="cardGradNav" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#500f80" />
+                <stop offset="100%" stop-color="#1d0438" />
+              </linearGradient>
+              <linearGradient id="borderGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#c084fc" />
+                <stop offset="100%" stop-color="#581c87" />
+              </linearGradient>
+              <linearGradient id="starCoreNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="50%" stop-color="#e9d5ff" />
+                <stop offset="100%" stop-color="#a855f7" />
+              </linearGradient>
+              <linearGradient id="orbitGradNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="60%" stop-color="#c084fc" />
+                <stop offset="100%" stop-color="#6b21a8" />
+              </linearGradient>
+            </defs>
+            <rect x="50" y="50" width="400" height="400" rx="90" fill="url(#cardGradNav)" stroke="url(#borderGradNav)" stroke-width="8" />
+            <path d="M 330 180 C 400 170 410 220 370 250" fill="none" stroke="url(#orbitGradNav)" stroke-width="12" stroke-linecap="round" />
+            <path d="M 250 140 Q 250 250 360 250 Q 250 250 250 360 Q 250 250 140 250 Q 250 250 250 140 Z" fill="url(#starCoreNav)" />
+            <path d="M 10 400 C 0 320 120 280 220 380" fill="none" stroke="url(#orbitGradNav)" stroke-width="14" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-name">Nova AI</h1>
+          <p class="brand-sub">Always ready to help</p>
+        </div>
       </div>
     </div>
+
     <button class="pill-btn-new" id="new-chat-btn">+ New chat</button>
   </header>
 
-  <!-- Hero Landing Screen -->
+  <!-- Hero Screen -->
   <main class="hero-screen" id="hero-screen">
     
-    <div class="star-logo-container">
-      <svg viewBox="0 0 500 500" class="hero-logo-img" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="cardGradHero" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#500f80" />
-            <stop offset="100%" stop-color="#1d0438" />
-          </linearGradient>
-          <linearGradient id="borderGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#c084fc" />
-            <stop offset="100%" stop-color="#581c87" />
-          </linearGradient>
-          <linearGradient id="starCoreHero" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="50%" stop-color="#e9d5ff" />
-            <stop offset="100%" stop-color="#a855f7" />
-          </linearGradient>
-          <linearGradient id="orbitGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="60%" stop-color="#c084fc" />
-            <stop offset="100%" stop-color="#6b21a8" />
-          </linearGradient>
-        </defs>
-        <rect x="50" y="50" width="400" height="400" rx="90" fill="url(#cardGradHero)" stroke="url(#borderGradHero)" stroke-width="8" />
-        <path d="M 330 180 C 400 170 410 220 370 250" fill="none" stroke="url(#orbitGradHero)" stroke-width="12" stroke-linecap="round" />
-        <path d="M 250 140 Q 250 250 360 250 Q 250 250 250 360 Q 250 250 140 250 Q 250 250 250 140 Z" fill="url(#starCoreHero)" />
-        <path d="M 10 400 C 0 320 120 280 220 380" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
-      </svg>
-    </div>
+    <!-- Logo & Title Stacked -->
+    <div class="hero-brand-stack">
+      <div class="star-logo-container">
+        <svg viewBox="0 0 500 500" class="hero-logo-img" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="cardGradHero" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#4a0e78" />
+              <stop offset="100%" stop-color="#190333" />
+            </linearGradient>
+            <linearGradient id="borderGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a855f7" />
+              <stop offset="100%" stop-color="#3b0764" />
+            </linearGradient>
+            <linearGradient id="starCoreHero" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="40%" stop-color="#f3e8ff" />
+              <stop offset="100%" stop-color="#c084fc" />
+            </linearGradient>
+            <linearGradient id="orbitGradHero" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="70%" stop-color="#c084fc" />
+              <stop offset="100%" stop-color="#7e22ce" />
+            </linearGradient>
+          </defs>
 
-    <div class="nova-title-container">
-      <svg viewBox="0 0 320 50" class="nova-title-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="novaTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="60%" stop-color="#e9d5ff" />
-            <stop offset="100%" stop-color="#a855f7" />
-          </linearGradient>
-        </defs>
-        <g fill="url(#novaTextGrad)">
-          <path d="M 10 40 L 10 10 L 18 10 L 32 30 L 32 10 L 40 10 L 40 40 L 32 40 L 18 20 L 18 40 Z" />
-          <path d="M 52 10 L 76 10 C 82 10 86 14 86 20 L 86 30 C 86 36 82 40 76 40 L 52 40 C 46 40 42 36 42 30 L 42 20 C 42 14 46 10 52 10 Z M 52 17 C 50 17 49 18 49 20 L 49 30 C 49 32 50 33 52 33 L 76 33 C 78 33 79 32 79 30 L 79 20 C 79 18 78 17 76 17 Z" />
-          <path d="M 92 10 L 100 10 L 109 32 L 118 10 L 126 10 L 113 40 L 105 40 Z" />
-          <path d="M 132 40 L 145 10 L 153 10 L 166 40 L 158 40 L 149 18 L 140 40 Z" />
-          <path d="M 190 40 L 203 10 L 211 10 L 224 40 L 216 40 L 207 18 L 198 40 Z" />
-          <path d="M 232 10 L 240 10 L 240 40 L 232 40 Z" />
-        </g>
-      </svg>
+          <!-- Main Rounded Square Card -->
+          <rect x="60" y="60" width="380" height="380" rx="85" fill="url(#cardGradHero)" stroke="url(#borderGradHero)" stroke-width="6" />
+
+          <!-- Top Right Swoosh Loop -->
+          <path d="M 270 190 C 390 150 400 230 350 245" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
+
+          <!-- Center Big Four-Point Star -->
+          <path d="M 250 130 Q 250 250 370 250 Q 250 250 250 370 Q 250 250 130 250 Q 250 250 250 130 Z" fill="url(#starCoreHero)" />
+
+          <!-- Bottom Left Outer Swoosh -->
+          <path d="M 5 380 C 10 280 130 260 210 360" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
+
+          <!-- Left Outer Sparkle Star -->
+          <path d="M 40 250 Q 40 260 50 260 Q 40 260 40 270 Q 40 260 30 260 Q 40 260 40 250 Z" fill="#e9d5ff" />
+
+          <!-- Right Outer Sparkle Star -->
+          <path d="M 470 250 Q 470 260 480 260 Q 470 260 470 270 Q 470 260 460 260 Q 470 260 470 250 Z" fill="#e9d5ff" />
+        </svg>
+      </div>
+
+      <div class="nova-title-container">
+        <svg viewBox="0 0 320 50" class="nova-title-svg" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="novaTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="60%" stop-color="#e9d5ff" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+          <g fill="url(#novaTextGrad)">
+            <path d="M 10 40 L 10 10 L 18 10 L 32 30 L 32 10 L 40 10 L 40 40 L 32 40 L 18 20 L 18 40 Z" />
+            <path d="M 52 10 L 76 10 C 82 10 86 14 86 20 L 86 30 C 86 36 82 40 76 40 L 52 40 C 46 40 42 36 42 30 L 42 20 C 42 14 46 10 52 10 Z M 52 17 C 50 17 49 18 49 20 L 49 30 C 49 32 50 33 52 33 L 76 33 C 78 33 79 32 79 30 L 79 20 C 79 18 78 17 76 17 Z" />
+            <path d="M 92 10 L 100 10 L 109 32 L 118 10 L 126 10 L 113 40 L 105 40 Z" />
+            <path d="M 132 40 L 145 10 L 153 10 L 166 40 L 158 40 L 149 18 L 140 40 Z" />
+            <path d="M 190 40 L 203 10 L 211 10 L 224 40 L 216 40 L 207 18 L 198 40 Z" />
+            <path d="M 232 10 L 240 10 L 240 40 L 232 40 Z" />
+          </g>
+        </svg>
+      </div>
     </div>
 
     <p class="tagline">Think ✦ Create ✦ Explore</p>
@@ -116,15 +449,14 @@
 
     <div class="chips-group">
       <div class="chip-row">
-        <button class="prompt-chip">💡 Explain something</button>
-        <button class="prompt-chip">✍️ Help me write</button>
-        <button class="prompt-chip">🚀 Give me an idea</button>
+        <button class="prompt-chip" type="button">💡 Explain something</button>
+        <button class="prompt-chip" type="button">✍️ Help me write</button>
+        <button class="prompt-chip" type="button">🚀 Give me an idea</button>
       </div>
     </div>
-
   </main>
 
-  <!-- Active Chat Feed Container (Hidden by Default) -->
+  <!-- Active Chat Feed Container -->
   <div class="chat-feed hidden" id="chat-feed"></div>
 
   <!-- Bottom Input Bar -->
@@ -135,6 +467,57 @@
     </form>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const heroScreen = document.getElementById("hero-screen");
+      const chatFeed = document.getElementById("chat-feed");
+      const chatForm = document.getElementById("chat-form");
+      const userInput = document.getElementById("user-input");
+      const newChatBtn = document.getElementById("new-chat-btn");
+      const promptChips = document.querySelectorAll(".prompt-chip");
+
+      function sendMessage(text) {
+        if (!text.trim()) return;
+
+        heroScreen.classList.add("hidden");
+        chatFeed.classList.remove("hidden");
+
+        const userMsg = document.createElement("div");
+        userMsg.className = "msg-bubble user-msg";
+        userMsg.textContent = text;
+        chatFeed.appendChild(userMsg);
+
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+
+        setTimeout(() => {
+          const aiMsg = document.createElement("div");
+          aiMsg.className = "msg-bubble ai-msg";
+          aiMsg.textContent = "I'm Nova AI! How can I assist you with that?";
+          chatFeed.appendChild(aiMsg);
+          chatFeed.scrollTop = chatFeed.scrollHeight;
+        }, 600);
+      }
+
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        sendMessage(userInput.value);
+        userInput.value = "";
+      });
+
+      promptChips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const text = chip.textContent.replace(/^[^\s]+\s*/, "");
+          sendMessage(text);
+        });
+      });
+
+      newChatBtn.addEventListener("click", () => {
+        chatFeed.innerHTML = "";
+        chatFeed.classList.add("hidden");
+        heroScreen.classList.remove("hidden");
+        userInput.value = "";
+      });
+    });
+  </script>
 </body>
 </html>
