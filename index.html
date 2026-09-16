@@ -129,16 +129,21 @@
       border-radius: 20px;
       font-size: 0.78rem;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
-    /* Centered Hero Main Content */
+    .pill-btn-new:hover {
+      background: rgba(168, 85, 247, 0.25);
+    }
+
+    /* Hero Main Content */
     .hero-screen {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 24px 120px 24px;
+      padding: 20px 24px 140px 24px;
       text-align: center;
       z-index: 1;
     }
@@ -147,13 +152,13 @@
       display: none !important;
     }
 
-    /* Stacked Logo + Title Block */
     .hero-brand-stack {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .star-logo-container {
@@ -182,6 +187,7 @@
     .nova-title-svg {
       width: 220px;
       height: auto;
+      display: block;
       filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.5));
     }
 
@@ -229,6 +235,13 @@
       font-size: 0.82rem;
       backdrop-filter: blur(8px);
       cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .prompt-chip:hover {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.6);
+      transform: translateY(-2px);
     }
 
     /* Active Chat Feed */
@@ -237,7 +250,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      padding: 20px 20px 120px 20px;
+      padding: 20px 20px 140px 20px;
       overflow-y: auto;
       z-index: 1;
       max-width: 600px;
@@ -255,6 +268,13 @@
       max-width: 85%;
       font-size: 0.92rem;
       line-height: 1.45;
+      word-wrap: break-word;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .user-msg {
@@ -272,17 +292,53 @@
       border-bottom-left-radius: 4px;
     }
 
-    /* Fixed Input Dock */
+    /* Typing Dots Indicator */
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 14px 18px;
+    }
+
+    .typing-indicator span {
+      width: 6px;
+      height: 6px;
+      background: #d8b4fe;
+      border-radius: 50%;
+      animation: pulse 1.2s infinite ease-in-out;
+    }
+
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Fixed Input Dock & Usage Limit Counter */
     .input-dock-fixed {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      padding: 16px 20px;
+      padding: 12px 20px 16px 20px;
       background: linear-gradient(to top, #07030e 85%, transparent);
       z-index: 10;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .response-limit-pill {
+      font-size: 0.72rem;
+      color: #d8b4fe;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 3px 10px;
+      border-radius: 12px;
+      letter-spacing: 0.3px;
     }
 
     .input-bar {
@@ -306,6 +362,11 @@
       width: 100%;
     }
 
+    .input-bar input:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
     .send-circle-btn {
       width: 36px;
       height: 36px;
@@ -318,6 +379,13 @@
       justify-content: center;
       cursor: pointer;
       flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .send-circle-btn:disabled {
+      background: #4a2173;
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -371,10 +439,8 @@
     <button class="pill-btn-new" id="new-chat-btn">+ New chat</button>
   </header>
 
-  <!-- Hero Screen -->
+  <!-- Hero Screen (Welcome View) -->
   <main class="hero-screen" id="hero-screen">
-    
-    <!-- Logo & Title Stacked -->
     <div class="hero-brand-stack">
       <div class="star-logo-container">
         <svg viewBox="0 0 500 500" class="hero-logo-img" xmlns="http://www.w3.org/2000/svg">
@@ -399,28 +465,18 @@
             </linearGradient>
           </defs>
 
-          <!-- Main Rounded Square Card -->
           <rect x="60" y="60" width="380" height="380" rx="85" fill="url(#cardGradHero)" stroke="url(#borderGradHero)" stroke-width="6" />
-
-          <!-- Top Right Swoosh Loop -->
           <path d="M 270 190 C 390 150 400 230 350 245" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
-
-          <!-- Center Big Four-Point Star -->
           <path d="M 250 130 Q 250 250 370 250 Q 250 250 250 370 Q 250 250 130 250 Q 250 250 250 130 Z" fill="url(#starCoreHero)" />
-
-          <!-- Bottom Left Outer Swoosh -->
           <path d="M 5 380 C 10 280 130 260 210 360" fill="none" stroke="url(#orbitGradHero)" stroke-width="14" stroke-linecap="round" />
-
-          <!-- Left Outer Sparkle Star -->
           <path d="M 40 250 Q 40 260 50 260 Q 40 260 40 270 Q 40 260 30 260 Q 40 260 40 250 Z" fill="#e9d5ff" />
-
-          <!-- Right Outer Sparkle Star -->
           <path d="M 470 250 Q 470 260 480 260 Q 470 260 470 270 Q 470 260 460 260 Q 470 260 470 250 Z" fill="#e9d5ff" />
         </svg>
       </div>
 
+      <!-- Perfect Center Nova Title SVG -->
       <div class="nova-title-container">
-        <svg viewBox="0 0 320 50" class="nova-title-svg" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 260 50" class="nova-title-svg" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="novaTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stop-color="#ffffff" />
@@ -428,7 +484,7 @@
               <stop offset="100%" stop-color="#a855f7" />
             </linearGradient>
           </defs>
-          <g fill="url(#novaTextGrad)">
+          <g fill="url(#novaTextGrad)" transform="translate(14, 0)">
             <path d="M 10 40 L 10 10 L 18 10 L 32 30 L 32 10 L 40 10 L 40 40 L 32 40 L 18 20 L 18 40 Z" />
             <path d="M 52 10 L 76 10 C 82 10 86 14 86 20 L 86 30 C 86 36 82 40 76 40 L 52 40 C 46 40 42 36 42 30 L 42 20 C 42 14 46 10 52 10 Z M 52 17 C 50 17 49 18 49 20 L 49 30 C 49 32 50 33 52 33 L 76 33 C 78 33 79 32 79 30 L 79 20 C 79 18 78 17 76 17 Z" />
             <path d="M 92 10 L 100 10 L 109 32 L 118 10 L 126 10 L 113 40 L 105 40 Z" />
@@ -449,21 +505,24 @@
 
     <div class="chips-group">
       <div class="chip-row">
-        <button class="prompt-chip" type="button">💡 Explain something</button>
-        <button class="prompt-chip" type="button">✍️ Help me write</button>
-        <button class="prompt-chip" type="button">🚀 Give me an idea</button>
+        <button class="prompt-chip" type="button" data-prompt="Explain quantum physics in simple terms">💡 Explain something</button>
+        <button class="prompt-chip" type="button" data-prompt="Help me write a creative sci-fi story">✍️ Help me write</button>
+        <button class="prompt-chip" type="button" data-prompt="Give me a creative web app idea">🚀 Give me an idea</button>
       </div>
     </div>
   </main>
 
-  <!-- Active Chat Feed Container -->
+  <!-- Active Chat Feed -->
   <div class="chat-feed hidden" id="chat-feed"></div>
 
-  <!-- Bottom Input Bar -->
+  <!-- Bottom Input Bar & Response Counter -->
   <div class="input-dock-fixed">
+    <div class="response-limit-pill" id="limit-pill">
+      Responses left: <span id="responses-left">10</span>/10
+    </div>
     <form class="input-bar" id="chat-form">
       <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" />
-      <button type="submit" class="send-circle-btn">➔</button>
+      <button type="submit" class="send-circle-btn" id="send-btn">➔</button>
     </form>
   </div>
 
@@ -473,50 +532,104 @@
       const chatFeed = document.getElementById("chat-feed");
       const chatForm = document.getElementById("chat-form");
       const userInput = document.getElementById("user-input");
+      const sendBtn = document.getElementById("send-btn");
       const newChatBtn = document.getElementById("new-chat-btn");
       const promptChips = document.querySelectorAll(".prompt-chip");
+      const responsesLeftSpan = document.getElementById("responses-left");
+      const limitPill = document.getElementById("limit-pill");
 
-      function sendMessage(text) {
-        if (!text.trim()) return;
+      const MAX_RESPONSES = 10;
+      let responsesRemaining = MAX_RESPONSES;
 
-        heroScreen.classList.add("hidden");
-        chatFeed.classList.remove("hidden");
+      const aiResponses = {
+        "Explain quantum physics in simple terms": "Imagine subatomic particles acting like spinning coins that are both heads and tails at the same time until you look at them!",
+        "Help me write a creative sci-fi story": "I'd love to help! Tell me about your main character or setting, and we'll craft the scene together.",
+        "Give me a creative web app idea": "How about an interactive ambient productivity app where completing tasks builds a virtual glowing galaxy?"
+      };
+
+      function updateCounter() {
+        if (responsesLeftSpan) responsesLeftSpan.textContent = responsesRemaining;
+        
+        if (responsesRemaining <= 0 && limitPill) {
+          limitPill.textContent = "Response limit reached for this session";
+          limitPill.style.color = "#f87171";
+          limitPill.style.borderColor = "rgba(239, 68, 68, 0.4)";
+          userInput.disabled = true;
+          userInput.placeholder = "Limit reached. Click + New Chat!";
+          sendBtn.disabled = true;
+        }
+      }
+
+      function handleSendMessage(text) {
+        if (!text.trim() || responsesRemaining <= 0) return;
+
+        if (heroScreen && !heroScreen.classList.contains("hidden")) {
+          heroScreen.classList.add("hidden");
+          chatFeed.classList.remove("hidden");
+        }
 
         const userMsg = document.createElement("div");
         userMsg.className = "msg-bubble user-msg";
         userMsg.textContent = text;
         chatFeed.appendChild(userMsg);
+        chatFeed.scrollTop = chatFeed.scrollHeight;
 
+        const typingIndicator = document.createElement("div");
+        typingIndicator.className = "msg-bubble ai-msg typing-indicator";
+        typingIndicator.innerHTML = "<span></span><span></span><span></span>";
+        chatFeed.appendChild(typingIndicator);
         chatFeed.scrollTop = chatFeed.scrollHeight;
 
         setTimeout(() => {
+          chatFeed.removeChild(typingIndicator);
+
+          responsesRemaining--;
+          updateCounter();
+
           const aiMsg = document.createElement("div");
           aiMsg.className = "msg-bubble ai-msg";
-          aiMsg.textContent = "I'm Nova AI! How can I assist you with that?";
+          
+          aiMsg.textContent = aiResponses[text] || "I'm Nova AI! How else can I assist you with this?";
+
           chatFeed.appendChild(aiMsg);
           chatFeed.scrollTop = chatFeed.scrollHeight;
-        }, 600);
+        }, 700);
       }
 
-      chatForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        sendMessage(userInput.value);
-        userInput.value = "";
-      });
+      if (chatForm) {
+        chatForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const text = userInput.value;
+          userInput.value = "";
+          handleSendMessage(text);
+        });
+      }
 
       promptChips.forEach((chip) => {
         chip.addEventListener("click", () => {
-          const text = chip.textContent.replace(/^[^\s]+\s*/, "");
-          sendMessage(text);
+          const promptText = chip.getAttribute("data-prompt") || chip.textContent.trim();
+          handleSendMessage(promptText);
         });
       });
 
-      newChatBtn.addEventListener("click", () => {
-        chatFeed.innerHTML = "";
-        chatFeed.classList.add("hidden");
-        heroScreen.classList.remove("hidden");
-        userInput.value = "";
-      });
+      if (newChatBtn) {
+        newChatBtn.addEventListener("click", () => {
+          chatFeed.innerHTML = "";
+          chatFeed.classList.add("hidden");
+          heroScreen.classList.remove("hidden");
+          userInput.value = "";
+          
+          responsesRemaining = MAX_RESPONSES;
+          if (limitPill) {
+            limitPill.style.color = "#d8b4fe";
+            limitPill.style.borderColor = "rgba(168, 85, 247, 0.3)";
+            limitPill.innerHTML = 'Responses left: <span id="responses-left">10</span>/10';
+          }
+          userInput.disabled = false;
+          userInput.placeholder = "Type your message...";
+          sendBtn.disabled = false;
+        });
+      }
     });
   </script>
 </body>
