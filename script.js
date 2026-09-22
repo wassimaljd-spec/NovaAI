@@ -1,5 +1,3 @@
-// 1. Paste your Gemini API key inside the quotes below
-const API_KEY = "AQ.Ab8RN6LJJKsBtstjpYxZI-_50QE5LGFe6IZ1JXHR2nnBmEJzYQ";
 
 // 2. Function to communicate with the Gemini API
 async function askNovaAI(userPrompt) {
