@@ -1,3 +1,5 @@
+const API_KEY = "AQ.Ab8RN6LJJKsBtstjpYxZI-_50QE5LGFe6IZ1JXHR2nnBmEJzYQ";
+
 document.addEventListener("DOMContentLoaded", () => {
   // Elements
   const heroScreen = document.getElementById("hero-screen");
